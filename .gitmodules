@@ -1,0 +1,28 @@
+[submodule "SynthRidersPlus/CP_SDK"]
+	path = SynthRidersPlus/CP_SDK
+	url = https://lfsa-gitlab.abachelet.fr/chatplex/ChatPlexSDK.git
+	update = merge
+[submodule "Modules/SynthRidersPlus_Chat/ChatPlexMod_Chat"]
+	path = Modules/SynthRidersPlus_Chat/ChatPlexMod_Chat
+	url = https://lfsa-gitlab.abachelet.fr/chatplex/ChatPlexMod_Chat.git
+	update = merge
+[submodule "Modules/SynthRidersPlus_ChatEmoteRain/ChatPlexMod_ChatEmoteRain"]
+	path = Modules/SynthRidersPlus_ChatEmoteRain/ChatPlexMod_ChatEmoteRain
+	url = https://lfsa-gitlab.abachelet.fr/chatplex/ChatPlexMod_ChatEmoteRain.git
+	update = merge
+[submodule "Modules/SynthRidersPlus_ChatIntegrations/ChatPlexMod_ChatIntegrations"]
+	path = Modules/SynthRidersPlus_ChatIntegrations/ChatPlexMod_ChatIntegrations
+	url = https://lfsa-gitlab.abachelet.fr/chatplex/ChatPlexMod_ChatIntegrations.git
+	update = merge
+[submodule "Modules/SynthRidersPlus_CustomCameras/ChatPlexMod_CustomCameras"]
+	path = Modules/SynthRidersPlus_CustomCameras/ChatPlexMod_CustomCameras
+	url = https://lfsa-gitlab.abachelet.fr/chatplex/ChatPlexMod_CustomCameras.git
+	update = merge
+[submodule "PrivateModules/SynthRidersPlusYoutube/ChatPlexYoutube"]
+	path = PrivateModules/SynthRidersPlusYoutube/ChatPlexYoutube
+	url = https://lfsa-gitlab.abachelet.fr/chatplex/ChatPlexYoutube.git
+	update = merge
+[submodule "PrivateModules/SynthRidersPlusKick/ChatPlexKick"]
+	path = PrivateModules/SynthRidersPlusKick/ChatPlexKick
+	url = https://lfsa-gitlab.abachelet.fr/chatplex/ChatPlexKick.git
+	update = merge

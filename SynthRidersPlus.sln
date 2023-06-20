@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthRidersPlus", "SynthRidersPlus\SynthRidersPlus.csproj", "{72F5718A-8114-4103-B1C3-59FDBA46FC1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{78FA9AEC-F4B3-4DA2-8E05-5B563632DBDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthRidersPlus_CustomCameras", "Modules\SynthRidersPlus_CustomCameras\SynthRidersPlus_CustomCameras.csproj", "{735F3A9D-7F0E-4369-8A3D-2329AFE8D147}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthRidersPlus_Chat", "Modules\SynthRidersPlus_Chat\SynthRidersPlus_Chat.csproj", "{07092E70-1EA8-4613-BDE7-CA3AB972156A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthRidersPlus_ChatEmoteRain", "Modules\SynthRidersPlus_ChatEmoteRain\SynthRidersPlus_ChatEmoteRain.csproj", "{D2F70192-215C-4605-AB44-74BBD9605C18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthRidersPlus_ChatIntegrations", "Modules\SynthRidersPlus_ChatIntegrations\SynthRidersPlus_ChatIntegrations.csproj", "{2C533AF9-45F3-4F86-B94F-B07CE06C3F1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PrivateModules", "PrivateModules", "{BA959D31-6E07-4EE7-95F4-FDD46A5F48CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthRidersPlusYoutube", "PrivateModules\SynthRidersPlusYoutube\SynthRidersPlusYoutube.csproj", "{814F58B6-D529-48FD-B824-CDD3EB197FBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SynthRidersPlusKick", "PrivateModules\SynthRidersPlusKick\SynthRidersPlusKick.csproj", "{CE49CB1D-51FC-49C4-B5BA-61C9EE4C92F0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72F5718A-8114-4103-B1C3-59FDBA46FC1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72F5718A-8114-4103-B1C3-59FDBA46FC1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72F5718A-8114-4103-B1C3-59FDBA46FC1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72F5718A-8114-4103-B1C3-59FDBA46FC1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{735F3A9D-7F0E-4369-8A3D-2329AFE8D147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{735F3A9D-7F0E-4369-8A3D-2329AFE8D147}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{735F3A9D-7F0E-4369-8A3D-2329AFE8D147}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{735F3A9D-7F0E-4369-8A3D-2329AFE8D147}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07092E70-1EA8-4613-BDE7-CA3AB972156A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07092E70-1EA8-4613-BDE7-CA3AB972156A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07092E70-1EA8-4613-BDE7-CA3AB972156A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07092E70-1EA8-4613-BDE7-CA3AB972156A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2F70192-215C-4605-AB44-74BBD9605C18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2F70192-215C-4605-AB44-74BBD9605C18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2F70192-215C-4605-AB44-74BBD9605C18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2F70192-215C-4605-AB44-74BBD9605C18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C533AF9-45F3-4F86-B94F-B07CE06C3F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C533AF9-45F3-4F86-B94F-B07CE06C3F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C533AF9-45F3-4F86-B94F-B07CE06C3F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C533AF9-45F3-4F86-B94F-B07CE06C3F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{814F58B6-D529-48FD-B824-CDD3EB197FBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{814F58B6-D529-48FD-B824-CDD3EB197FBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{814F58B6-D529-48FD-B824-CDD3EB197FBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{814F58B6-D529-48FD-B824-CDD3EB197FBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE49CB1D-51FC-49C4-B5BA-61C9EE4C92F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE49CB1D-51FC-49C4-B5BA-61C9EE4C92F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE49CB1D-51FC-49C4-B5BA-61C9EE4C92F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE49CB1D-51FC-49C4-B5BA-61C9EE4C92F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{735F3A9D-7F0E-4369-8A3D-2329AFE8D147} = {78FA9AEC-F4B3-4DA2-8E05-5B563632DBDA}
+		{07092E70-1EA8-4613-BDE7-CA3AB972156A} = {78FA9AEC-F4B3-4DA2-8E05-5B563632DBDA}
+		{D2F70192-215C-4605-AB44-74BBD9605C18} = {78FA9AEC-F4B3-4DA2-8E05-5B563632DBDA}
+		{2C533AF9-45F3-4F86-B94F-B07CE06C3F1E} = {78FA9AEC-F4B3-4DA2-8E05-5B563632DBDA}
+		{814F58B6-D529-48FD-B824-CDD3EB197FBE} = {BA959D31-6E07-4EE7-95F4-FDD46A5F48CC}
+		{CE49CB1D-51FC-49C4-B5BA-61C9EE4C92F0} = {BA959D31-6E07-4EE7-95F4-FDD46A5F48CC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {31E44A10-EA9F-4F4E-BB79-DF770629F67A}
+	EndGlobalSection
+EndGlobal
