@@ -25,9 +25,9 @@ Current version : 6.0.4
     - Advanced configuration options.
 - **ChatIntegrations:**
     - Perform various actions with events.
-    - Events can use -> **Chat events / Level status / VoiceAttackCommands (plugin installation required)**
-    - Conditions -> **Chat Request / Event enabled? / Playing map? / Cooldown / OBS Status**
-    - Actions -> **Camera2 / Chat / EmoteRain / Event / GamePlay / Misc (waiting events) / NoteTweaker (profile changing) / OBS interact /   SongChartVisualizer / Twitch**
+    - Events can use -> **Chat events / VoiceAttackCommands (plugin installation required)**
+    - Conditions -> **Event enabled? / Playing map? / Cooldown / OBS Status**
+    - Actions -> **Chat / EmoteRain / Event / GamePlay / Misc (waiting events) / OBS interact / Twitch**
 - **CustomCameras:**
     - Custom first & third persons camera with a lot of customisation options
 - **Kick:** (For supporters only)
@@ -44,3 +44,9 @@ https://discord.gg/63ebPMC
 * [EnhancedStreamChat-v3](https://github.com/brian91292/EnhancedStreamChat-v3)
 * [websocket-sharp](https://github.com/sta/websocket-sharp)
 
+
+## **Screenshots**
+![](https://i.imgur.com/DFtNe3m.jpg)
+![](https://i.imgur.com/jcVtQ4A.jpg)
+![](https://i.imgur.com/DYKqL4C.jpg)
+![](https://i.imgur.com/XAczHne.png)
