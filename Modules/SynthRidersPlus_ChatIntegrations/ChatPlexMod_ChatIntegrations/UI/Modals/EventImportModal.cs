@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace ChatPlexMod_ChatIntegrations.UI
+namespace ChatPlexMod_ChatIntegrations.UI.Modals
 {
     /// <summary>
     /// Event import modal

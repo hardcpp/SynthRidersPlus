@@ -37,13 +37,22 @@
             l_TextListCell.Text.SetText(Text).SetAlign(Align);
             l_TextListCell.Tooltip = Tooltip;
         }
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
-        /// On hide
+        /// On select
         /// </summary>
-        public override void OnHide()
+        public override void OnSelect()
         {
-            if (!(Cell is TextListCell l_TextListCell))
-                return;
+
+        }
+        /// <summary>
+        /// On Unselect
+        /// </summary>
+        public override void OnUnselect()
+        {
 
         }
     }

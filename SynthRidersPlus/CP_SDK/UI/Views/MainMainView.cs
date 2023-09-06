@@ -35,7 +35,7 @@ namespace CP_SDK.UI.Views
                         FlowCoordinators.MainFlowCoordinator.Instance().ChangeViewControllers(l_Items.Item1, l_Items.Item2, l_Items.Item3);
                     })
                     .SetFontSize(3.44f)
-                    .SetWidth(35f)
+                    .SetWidth(40f)
                     .SetHeight(7f)
                     .SetTooltip(l_Module.Description)
                     .OnReady(x => m_ModulesButton.Add(l_Module, x))
@@ -48,19 +48,19 @@ namespace CP_SDK.UI.Views
                 XUIGLayout.Make(
                     l_Buttons.ToArray()
                 )
-                .SetCellSize(new Vector2(35, 9))
+                .SetCellSize(new Vector2(40, 9))
                 .SetChildAlign(TextAnchor.UpperCenter)
                 .SetConstraint(GridLayoutGroup.Constraint.FixedColumnCount)
                 .SetConstraintCount(3)
                 .SetSpacing(new Vector2(2, 0))
-                .SetWidth(109)
+                .SetWidth(124)
                 .SetHeight(55),
 
                 Templates.ExpandedButtonsLine(
                     XUIPrimaryButton.Make("Settings", OnSettingsPressed)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
         /// <summary>
@@ -79,7 +79,7 @@ namespace CP_SDK.UI.Views
             if (CPConfig.Instance.FirstRun)
 #endif
             {
-                ShowMessageModal($"<color=yellow><b>Welcome to {ChatPlexSDK.ProductName}!</b></color>\nBy default most modules are disabled, you can enable/disable them any time by clicking the <b><u>Settings</u></b> button below");
+                ShowMessageModal($"<color=yellow><b>Welcome to {ChatPlexSDK.ProductName}!</b></color>\nBy default most modules are disabled, you can enable/disable them\nany time by clicking the <b>Settings</b> button below");
                 CPConfig.Instance.FirstRun = false;
                 CPConfig.Instance.Save();
             }

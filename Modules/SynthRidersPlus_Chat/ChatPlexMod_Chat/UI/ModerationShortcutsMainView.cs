@@ -49,7 +49,7 @@ namespace ChatPlexMod_Chat.UI
                     XUIPrimaryButton.Make("Delete").OnClick(OnDeleteButton)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
         /// <summary>

@@ -201,7 +201,7 @@ namespace CP_SDK.UI
             l_Background.pixelsPerUnitMultiplier    = 1;
             l_Background.type                       = Image.Type.Sliced;
             l_Background.sprite                     = UISystem.GetUIRoundBGSprite();
-            l_Background.color                      = Color.black.WithAlpha(0.80f);
+            l_Background.color                      = ColorU.WithAlpha(Color.black, 0.80f);
 
             l_Modal.gameObject.SetActive(false);
 

@@ -49,7 +49,7 @@ namespace CP_SDK.XUI
 
             BuildUIChilds(m_Element.transform);
 
-            try { m_OnReady?.Invoke(m_Element as t_Component); }
+            try { m_OnReady?.Invoke(m_Element as t_Component); m_OnReady = null; }
             catch (Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.XUI][_XUIHOrVLayout<{typeof(t_Component).Name}>.BuildUI] Error OnReady:");

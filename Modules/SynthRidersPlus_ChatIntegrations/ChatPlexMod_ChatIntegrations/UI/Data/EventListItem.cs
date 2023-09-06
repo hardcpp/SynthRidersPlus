@@ -1,11 +1,11 @@
-﻿namespace ChatPlexMod_ChatIntegrations.UI
+﻿namespace ChatPlexMod_ChatIntegrations.UI.Data
 {
     /// <summary>
-    /// Action list item
+    /// Event list item
     /// </summary>
-    internal class ActionListItem : CP_SDK.UI.Data.IListItem
+    internal class EventListItem : CP_SDK.UI.Data.IListItem
     {
-        public Interfaces.IActionBase Action;
+        public Interfaces.IEventBase Event;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -13,10 +13,10 @@
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="p_Action">Action</param>
-        public ActionListItem(Interfaces.IActionBase p_Action)
+        /// <param name="p_Event">Event</param>
+        public EventListItem(Interfaces.IEventBase p_Event)
         {
-            Action = p_Action;
+            Event = p_Event;
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,24 @@
             if (Cell == null || !(Cell is CP_SDK.UI.Data.TextListCell l_TextListCell))
                 return;
 
-            var l_Text = "<align=\"left\">" + (Action.IsEnabled ? "<color=yellow>" + Action.GetTypeName().Replace("_", "::</color><b>") : "<alpha=#70><s>" + Action.GetTypeName().Replace("_", "::"));
+            var l_Text = "<line-height=1%><align=\"left\">";
+
+            if (!Event.IsEnabled)
+                l_Text += "<alpha=#70>";
+            else
+                l_Text += "<b>";
+
+            l_Text += (Event.IsEnabled ? "<color=yellow>" : "") + "[" + Event.GetTypeName() + "] " + (Event.IsEnabled ? "</color>" : "");
+            l_Text += " ";
+            l_Text += Event.GenericModel.Name.Length > 40 ? (Event.GenericModel.Name.Substring(0, 37) + "...") : Event.GenericModel.Name;
+
+            if (!Event.IsEnabled)
+                l_Text += " (Disabled)";
+            else
+                l_Text += "</b>";
+
+            l_Text += "\n<line-height=100%><align=\"right\">" + Event.GenericModel.UsageCount + " use(s)";
+
             l_TextListCell.Text.SetText(l_Text);
         }
     }

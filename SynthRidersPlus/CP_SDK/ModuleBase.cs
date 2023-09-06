@@ -1,4 +1,6 @@
-﻿namespace CP_SDK
+﻿using UnityEngine;
+
+namespace CP_SDK
 {
     /// <summary>
     /// Module type
@@ -72,8 +74,8 @@
     /// <summary>
     /// Module base interface
     /// </summary>
-    public abstract class ModuleBase<T> : IModuleBase
-        where T : ModuleBase<T>, new()
+    public abstract class ModuleBase<t_Type> : IModuleBase
+        where t_Type : ModuleBase<t_Type>, new()
     {
         public abstract EIModuleBaseType            Type                { get;      }
         public abstract string                      Name                { get;      }
@@ -90,7 +92,7 @@
         /// <summary>
         /// Singleton
         /// </summary>
-        public static T Instance { get; private set; } = null;
+        public static t_Type Instance { get; private set; } = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -148,7 +150,7 @@
                 return;
 
             m_WasEnabled = true;
-            Instance = this as T;
+            Instance = this as t_Type;
             OnEnable();
         }
         /// <summary>

@@ -60,6 +60,17 @@ namespace CP_SDK.UI
             m_Instance.Dismiss();
         }
         /// <summary>
+        /// Destroy
+        /// </summary>
+        internal static void Destroy()
+        {
+            if (!m_Instance)
+                return;
+
+            GameObject.Destroy(m_Instance.gameObject);
+            m_Instance = null;
+        }
+        /// <summary>
         /// Register a mod button
         /// </summary>
         /// <param name="p_Button">Button to register</param>

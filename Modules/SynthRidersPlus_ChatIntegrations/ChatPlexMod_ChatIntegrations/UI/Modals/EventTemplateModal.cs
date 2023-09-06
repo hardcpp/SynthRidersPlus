@@ -3,15 +3,14 @@ using CP_SDK.XUI;
 using System;
 using System.Linq;
 
-namespace ChatPlexMod_ChatIntegrations.UI
+namespace ChatPlexMod_ChatIntegrations.UI.Modals
 {
     /// <summary>
-    /// Event create modal
+    /// Event template modal
     /// </summary>
-    internal sealed class EventCreateModal : CP_SDK.UI.IModal
+    internal sealed class EventTemplateModal : CP_SDK.UI.IModal
     {
-        private XUIDropdown  m_Type = null;
-        private XUITextInput m_Name = null;
+        private XUIDropdown m_Template = null;
 
         private Action<Interfaces.IEventBase>   m_Callback = null;
         private string                          m_Selected = null;
@@ -24,19 +23,16 @@ namespace ChatPlexMod_ChatIntegrations.UI
         /// </summary>
         public override void OnShow()
         {
-            if (m_Type != null)
+            if (m_Template != null)
                 return;
 
             Templates.ModalRectLayout(
-                XUIText.Make("What kind of event do you want to create?"),
+                XUIText.Make("Which template do you want to use?"),
 
                 XUIDropdown.Make()
-                    .SetOptions(ChatIntegrations.RegisteredEventTypes.ToList())
+                    .SetOptions(ChatIntegrations.RegisteredTemplates.Keys.ToList())
                     .OnValueChanged((_, p_Selected) => m_Selected = p_Selected)
-                    .Bind(ref m_Type),
-
-                XUITextInput.Make("", "Name...")
-                    .Bind(ref m_Name),
+                    .Bind(ref m_Template),
 
                 XUIHLayout.Make(
                     XUISecondaryButton.Make("Cancel", OnCancelButton).SetWidth(30f),
@@ -82,17 +78,17 @@ namespace ChatPlexMod_ChatIntegrations.UI
         /// </summary>
         private void OnCreateButton()
         {
+            if (!ChatIntegrations.RegisteredTemplates.TryGetValue(m_Selected, out var l_CreateFunc))
+            {
+                VController.ShowMessageModal("Template not found!");
+                return;
+            }
+
             try
             {
-                var l_NewEvent = ChatIntegrations.CreateEvent(m_Selected);
+                var l_NewEvent = l_CreateFunc();
                 if (l_NewEvent != null)
                 {
-                    var l_Name = m_Name.Element.GetValue();
-                    if (string.IsNullOrEmpty(l_Name))
-                        l_Name = "New " + m_Selected + " " + CP_SDK.Misc.Time.UnixTimeNow();
-
-                    l_NewEvent.GenericModel.Name = l_Name;
-
                     ChatIntegrations.Instance.AddEvent(l_NewEvent);
 
                     VController.CloseModal(this);
@@ -100,14 +96,14 @@ namespace ChatPlexMod_ChatIntegrations.UI
                     try { m_Callback?.Invoke(l_NewEvent); }
                     catch (System.Exception l_Exception)
                     {
-                        ChatPlexSDK.Logger.Error($"[ChatPlexMod_ChatIntegrations.UI][EventCreateModal.OnCreateButton] Error:");
+                        ChatPlexSDK.Logger.Error($"[ChatPlexMod_ChatIntegrations.UI][EventTemplateModal.OnCreateButton] Error:");
                         ChatPlexSDK.Logger.Error(l_Exception);
                     }
                 }
                 else
                 {
                     VController.CloseModal(this);
-                    VController.ShowMessageModal("No type selected!");
+                    VController.ShowMessageModal("No template selected!");
                 }
             }
             catch (System.Exception l_Exception)

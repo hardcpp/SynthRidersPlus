@@ -55,7 +55,7 @@ namespace ChatPlexMod_Chat.UI
                     y.OnReady((x) => x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained);
                 })
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
         /// <summary>

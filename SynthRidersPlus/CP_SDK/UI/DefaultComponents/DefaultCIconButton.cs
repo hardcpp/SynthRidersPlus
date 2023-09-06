@@ -69,7 +69,7 @@ namespace CP_SDK.UI.DefaultComponents
             l_FakeBg.type                       = Image.Type.Simple;
             l_FakeBg.pixelsPerUnitMultiplier    = 1;
             l_FakeBg.sprite                     = UISystem.GetUIRectBGSprite();
-            l_FakeBg.color                      = Color.black.WithAlpha(0.01f);
+            l_FakeBg.color                      = ColorU.WithAlpha(Color.black, 0.01f);
 
             var l_Colors = m_Button.colors;
             l_Colors.normalColor        = new Color32(255, 255, 255, 150);
@@ -132,7 +132,6 @@ namespace CP_SDK.UI.DefaultComponents
                 return;
 
             StopAllCoroutines();
-
             StartCoroutine(Coroutine_AnimateScale(1.25f * Vector3.one, 0.075f));
         }
         /// <summary>
@@ -157,7 +156,7 @@ namespace CP_SDK.UI.DefaultComponents
         private IEnumerator Coroutine_AnimateScale(Vector3 p_Target, float p_Time)
         {
             var l_Waiter = new WaitForEndOfFrame();
-            var l_DeltaT = 0f;
+            var l_DeltaT = 0.0f;
 
             while (l_DeltaT < p_Time)
             {

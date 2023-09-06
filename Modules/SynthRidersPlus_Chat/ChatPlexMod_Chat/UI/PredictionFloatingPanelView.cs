@@ -1,4 +1,5 @@
-﻿using CP_SDK.XUI;
+﻿using CP_SDK.Unity.Extensions;
+using CP_SDK.XUI;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -16,8 +17,8 @@ namespace ChatPlexMod_Chat.UI
         private static Color TIME_PROGRESSBAR_BACKGROUND    = new Color32( 70,  70,  73, 255);
         private static Color TIME_PROGRESSBAR_FILLER        = new Color32(164, 115, 251, 255);
 
-        private static string TAG_BLUE = "<#" + ColorUtility.ToHtmlStringRGB(new Color32( 56, 122, 255, 255)) + ">";
-        private static string TAG_PINK = "<#" + ColorUtility.ToHtmlStringRGB(new Color32(245,   0, 155, 255)) + ">";
+        private static string TAG_BLUE = "<" + ColorU.ToHexRGB(new Color32( 56, 122, 255, 255)) + ">";
+        private static string TAG_PINK = "<" + ColorU.ToHexRGB(new Color32(245,   0, 155, 255)) + ">";
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -62,7 +63,7 @@ namespace ChatPlexMod_Chat.UI
         /// </summary>
         protected override sealed void OnViewCreation()
         {
-            var l_WhiteSprite = CP_SDK.Unity.SpriteU.CreateFromTexture(Texture2D.whiteTexture);
+            var l_WhiteSprite = CP_SDK.Unity.SpriteU.CreateFromTextureWithBorders(Texture2D.whiteTexture);
 
             Templates.FullRectLayout(
                 Templates.TitleBar("Prediction"),

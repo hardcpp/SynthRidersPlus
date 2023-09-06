@@ -74,10 +74,10 @@
     <Compile Include="ChatPlexMod_ChatEmoteRain\CERConfig.cs" />
     <Compile Include="ChatPlexMod_ChatEmoteRain\ChatEmoteRain.cs" />
     <Compile Include="ChatPlexMod_ChatEmoteRain\Logger.cs" />
-    <Compile Include="ChatPlexMod_ChatEmoteRain\UI\EmitterWidget.cs" />
     <Compile Include="ChatPlexMod_ChatEmoteRain\UI\SettingsLeftView.cs" />
     <Compile Include="ChatPlexMod_ChatEmoteRain\UI\SettingsMainView.cs" />
     <Compile Include="ChatPlexMod_ChatEmoteRain\UI\SettingsRightView.cs" />
+    <Compile Include="ChatPlexMod_ChatEmoteRain\UI\Widgets\EmitterWidget.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

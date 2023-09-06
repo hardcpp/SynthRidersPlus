@@ -1,6 +1,8 @@
-﻿using CP_SDK.Unity.Extensions;
+﻿using CP_SDK.UI;
+using CP_SDK.Unity.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 namespace CP_SDK.XUI
 {
@@ -12,13 +14,26 @@ namespace CP_SDK.XUI
         /// <summary>
         /// Modal rect layout
         /// </summary>
-        /// <param name="p_Childs"></param>
+        /// <param name="p_Childs">Childs</param>
         /// <returns></returns>
         public static XUIVLayout ModalRectLayout(params IXUIElement[] p_Childs)
             =>  XUIVLayout.Make("ModalRectLayout",
-                    p_Childs
+                    new IXUIElement[]
+                    {
+                        XUIImage.Make(UISystem.GetUIRoundSmoothFrameSprite())
+                        .SetType(Image.Type.Sliced)
+                        .SetColor(ColorU.WithAlpha(Color.white, 0.80f))
+                        .OnReady(x =>
+                        {
+                            x.LElement.ignoreLayout = true;
+                            x.RTransform.anchorMin         = Vector2.zero;
+                            x.RTransform.anchorMax         = Vector2.one;
+                            x.RTransform.anchoredPosition  = Vector2.zero;
+                            x.RTransform.sizeDelta         = Vector2.zero;
+                        })
+                    }.Union(p_Childs).ToArray()
                 )
-                .SetBackground(true, "#202021".ToUnityColor().WithAlpha(0.975f), true);
+                .SetBackground(true, UISystem.ModalBGColor, true);
         /// <summary>
         /// Full rect layout for screens template
         /// </summary>
@@ -51,11 +66,11 @@ namespace CP_SDK.XUI
             =>  XUIHLayout.Make("TitleBar",
                     XUIText.Make(p_Text)
                         .SetAlign(TMPro.TextAlignmentOptions.CaplineGeoAligned)
-                        .SetFontSize(4.2f)
+                        .SetFontSize(4.0f)
                 )
                 .SetSpacing(0)
-                .SetPadding(0, 10, 0, 10)
-                .SetBackground(true, "#727272".ToUnityColor().WithAlpha(0.5f))
+                .SetPadding(0, 8, 0, 8)
+                .SetBackground(true, UISystem.TitleBlockBGColor)
                 .OnReady((x) => x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize);
         /// <summary>
         /// Scollable infos widget template

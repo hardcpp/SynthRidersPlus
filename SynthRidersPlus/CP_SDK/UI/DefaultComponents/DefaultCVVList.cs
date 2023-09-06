@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 namespace CP_SDK.UI.DefaultComponents
 {
@@ -27,8 +26,9 @@ namespace CP_SDK.UI.DefaultComponents
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        public override RectTransform RTransform    => m_RTransform;
-        public override LayoutElement LElement      => m_ScrollView?.LElement;
+        public override RectTransform   RTransform      => m_RTransform;
+        public override LayoutElement   LElement        => m_ScrollView?.LElement;
+        public override float           ScrollPosition  => m_ScrollView?.Position ?? 0.0f;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -82,6 +82,20 @@ namespace CP_SDK.UI.DefaultComponents
         /// <returns></returns>
         public override Data.IListItem GetSelectedItem()
             => m_SelectedListItem;
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Scroll to position
+        /// </summary>
+        /// <param name="p_TargetPosition">New target position</param>
+        /// <param name="p_Animated">Is animated?</param>
+        public override Components.CVXList ScrollTo(float p_TargetPosition, bool p_Animated)
+        {
+            m_ScrollView?.ScrollTo(p_TargetPosition, p_Animated);
+            return this;
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -160,6 +174,13 @@ namespace CP_SDK.UI.DefaultComponents
             if (!m_ListItems.Contains(l_NewSelectListItem))
                 l_NewSelectListItem = null;
 
+            try { m_SelectedListItem?.OnUnselect(); }
+            catch (Exception l_Exception)
+            {
+                ChatPlexSDK.Logger.Error($"[CP_SDK.UI.DefaultComponents][DefaultCVVList.SetSelectedListItem] Error:");
+                ChatPlexSDK.Logger.Error(l_Exception);
+            }
+
             m_SelectedListItem = l_NewSelectListItem;
 
             if (m_SelectedListItem != null)
@@ -178,6 +199,13 @@ namespace CP_SDK.UI.DefaultComponents
 
                 m_ScrollView.ScrollTo(l_CenteredHeight, true);
                 UpdateForCurrentScroll();
+
+                try { m_SelectedListItem?.OnSelect(); }
+                catch (Exception l_Exception)
+                {
+                    ChatPlexSDK.Logger.Error($"[CP_SDK.UI.DefaultComponents][DefaultCVVList.SetSelectedListItem] Error:");
+                    ChatPlexSDK.Logger.Error(l_Exception);
+                }
             }
 
             if (p_Notify)
@@ -288,7 +316,14 @@ namespace CP_SDK.UI.DefaultComponents
             for (int l_I = 0; l_I < m_VisibleListCells.Count; ++l_I)
             {
                 var l_ExistingCell = m_VisibleListCells[l_I];
-                l_ExistingCell.ListItem.OnHide();
+
+                try { l_ExistingCell.ListItem.OnHide(); }
+                catch (System.Exception l_Exception)
+                {
+                    ChatPlexSDK.Logger.Error($"[CP_SDK.UI.DefaultComponents][DefaultCVVList.ClearVisibles] OnHide Error:");
+                    ChatPlexSDK.Logger.Error(l_Exception);
+                }
+
                 l_ExistingCell.ListItem.SetCell(null);
                 l_ExistingCell.Bind(null, -1, null);
                 m_ListCellPool.Release(l_ExistingCell);

@@ -59,7 +59,7 @@ namespace CP_SDK.UI.DefaultComponents
             m_BG.rectTransform.anchoredPosition             = Vector2.zero;
             m_BG.rectTransform.sizeDelta                    = Vector2.zero;
             m_BG.material                   = UISystem.Override_GetUIMaterial();
-            m_BG.color                      = new Color32(37, 140, 255, 255);
+            m_BG.color                      = UISystem.PrimaryColor;
             m_BG.type                       = Image.Type.Sliced;
             m_BG.pixelsPerUnitMultiplier    = 1;
             m_BG.sprite                     = UISystem.GetUIRoundBGSprite();
@@ -144,7 +144,7 @@ namespace CP_SDK.UI.DefaultComponents
         {
             m_Button.interactable = p_Interactable;
 
-            m_ValueText.SetColor(Color.white.WithAlpha(p_Interactable ? 1f : 0.5f));
+            m_ValueText.SetColor(p_Interactable ? UISystem.PrimaryColor : UISystem.SecondaryColor);
             m_Icon.SetInteractable(p_Interactable);
 
             return this;

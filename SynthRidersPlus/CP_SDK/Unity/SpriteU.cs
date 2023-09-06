@@ -10,21 +10,6 @@ namespace CP_SDK.Unity
     public class SpriteU
     {
         /// <summary>
-        /// Create sprite from texture (Binary compat)
-        /// </summary>
-        /// <param name="p_Texture">Source texture</param>
-        /// <param name="p_PixelsPerUnit">Pixels per unit multiplier</param>
-        /// <param name="p_Pivot">Pivot point</param>
-        /// <param name="p_Extrude">Extrude amount</param>
-        /// <param name="p_Type">Sprite mesh type</param>
-        /// <returns></returns>
-        public static Sprite CreateFromTexture( Texture2D       p_Texture,
-                                                float           p_PixelsPerUnit = 100.0f,
-                                                Vector2         p_Pivot         = default,
-                                                uint            p_Extrude       = 0,
-                                                SpriteMeshType  p_Type          = SpriteMeshType.FullRect)
-            => CreateFromTextureWithBorders(p_Texture, p_PixelsPerUnit, p_Pivot, p_Extrude, p_Type, default);
-        /// <summary>
         /// Create sprite from texture
         /// </summary>
         /// <param name="p_Texture">Source texture</param>
@@ -50,25 +35,6 @@ namespace CP_SDK.Unity
 
             return null;
         }
-
-        ////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////
-
-        /// <summary>
-        /// Create sprite from raw bytes (Binary compat)
-        /// </summary>
-        /// <param name="p_Bytes">Raw data</param>
-        /// <param name="p_PixelsPerUnit">Pixels per unit multiplier</param>
-        /// <param name="p_Pivot">Pivot point</param>
-        /// <param name="p_Extrude">Extrude amount</param>
-        /// <param name="p_Type">Sprite mesh type</param>
-        /// <returns></returns>
-        public static Sprite CreateFromRaw( byte[]          p_Bytes,
-                                            float           p_PixelsPerUnit = 100.0f,
-                                            Vector2         p_Pivot         = default,
-                                            uint            p_Extrude       = 0,
-                                            SpriteMeshType  p_Type          = SpriteMeshType.FullRect)
-            => CreateFromRawWithBorders(p_Bytes, p_PixelsPerUnit, p_Pivot, p_Extrude, p_Type);
         /// <returns></returns>
         /// <summary>
         /// Create sprite from raw bytes
@@ -87,26 +53,6 @@ namespace CP_SDK.Unity
                                                         SpriteMeshType  p_Type          = SpriteMeshType.FullRect,
                                                         Vector4         p_Borders       = default)
             => CreateFromTextureWithBorders(Texture2DU.CreateFromRaw(p_Bytes), p_PixelsPerUnit, p_Pivot, p_Extrude, p_Type, p_Borders);
-
-        ////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////
-
-        /// <summary>
-        /// Create from raw threaded (Binary compat)
-        /// </summary>
-        /// <param name="p_Bytes">Raw data</param>
-        /// <param name="p_Callback">On result callback</param>
-        /// <param name="p_PixelsPerUnit">Pixels per unit multiplier</param>
-        /// <param name="p_Pivot">Pivot point</param>
-        /// <param name="p_Extrude">Extrude amount</param>
-        /// <param name="p_Type">Sprite mesh type</param>
-        public static void CreateFromRawThreaded(   byte[]          p_Bytes,
-                                                    Action<Sprite>  p_Callback,
-                                                    float           p_PixelsPerUnit = 100.0f,
-                                                    Vector2         p_Pivot         = default,
-                                                    uint            p_Extrude       = 0,
-                                                    SpriteMeshType  p_Type          = SpriteMeshType.FullRect)
-            => CreateFromRawWithBordersThreaded(p_Bytes, p_Callback, p_PixelsPerUnit, p_Pivot, p_Extrude, p_Type);
         /// <summary>
         /// Create from raw threaded
         /// </summary>

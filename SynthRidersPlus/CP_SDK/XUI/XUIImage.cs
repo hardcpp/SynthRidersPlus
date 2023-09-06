@@ -58,7 +58,7 @@ namespace CP_SDK.XUI
         {
             m_Element = UI.UISystem.ImageFactory.Create(m_InitialName, p_Parent);
 
-            try { m_OnReady?.Invoke(m_Element); }
+            try { m_OnReady?.Invoke(m_Element); m_OnReady = null; }
             catch (Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.XUI][XUIImage.BuildUI] Error OnReady:");
@@ -148,6 +148,12 @@ namespace CP_SDK.XUI
         /// <param name="p_EnhancedImage">New enhanced image</param>
         /// <returns></returns>
         public XUIImage SetEnhancedImage(Unity.EnhancedImage p_EnhancedImage) => OnReady(x => x.SetEnhancedImage(p_EnhancedImage));
+        /// <summary>
+        /// Set pixels per unit multiplier
+        /// </summary>
+        /// <param name="p_Multiplier">New multiplier</param>
+        /// <returns></returns>
+        public XUIImage SetPixelsPerUnitMultiplier(float p_Multiplier) => OnReady(x => x.SetPixelsPerUnitMultiplier(p_Multiplier));
         /// <summary>
         /// Set sprite
         /// </summary>

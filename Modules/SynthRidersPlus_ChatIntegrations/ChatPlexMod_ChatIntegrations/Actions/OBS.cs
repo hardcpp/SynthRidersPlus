@@ -504,7 +504,17 @@ namespace ChatPlexMod_ChatIntegrations.Actions
             if (OBSService.Status == OBSService.EStatus.Connected)
                 l_Choices.AddRange(OBSService.Scenes.Keys);
             else
-                CP_SDK.Chat.Service.Multiplexer?.InternalBroadcastSystemMessage("ChatIntegrations: Action failed, not connected to OBS!");
+            {
+                XUIElements = new IXUIElement[]
+                {
+                    XUIText.Make("OBS is not connected!")
+                        .SetColor(Color.red)
+                        .SetAlign(TMPro.TextAlignmentOptions.Center)
+                };
+
+                BuildUIAuto(p_Parent);
+                return;
+            }
 
             for (int l_I = 0; l_I < l_Choices.Count; ++l_I)
             {
@@ -532,7 +542,13 @@ namespace ChatPlexMod_ChatIntegrations.Actions
         ////////////////////////////////////////////////////////////////////////////
 
         private void OnSettingChanged()
-            => Model.SceneName = m_Scene.Element.GetValue();
+        {
+            /// Do not saved if OBS is not connected
+            if (OBSService.Status != OBSService.EStatus.Connected)
+                return;
+
+            Model.SceneName = m_Scene.Element.GetValue();
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -601,7 +617,17 @@ namespace ChatPlexMod_ChatIntegrations.Actions
             if (OBSService.Status == OBSService.EStatus.Connected)
                 l_Choices.AddRange(OBSService.Scenes.Keys);
             else
-                CP_SDK.Chat.Service.Multiplexer?.InternalBroadcastSystemMessage("ChatIntegrations: Action failed, not connected to OBS!");
+            {
+                XUIElements = new IXUIElement[]
+                {
+                    XUIText.Make("OBS is not connected!")
+                        .SetColor(Color.red)
+                        .SetAlign(TMPro.TextAlignmentOptions.Center)
+                };
+
+                BuildUIAuto(p_Parent);
+                return;
+            }
 
             for (int l_I = 0; l_I < l_Choices.Count; ++l_I)
             {
@@ -629,7 +655,13 @@ namespace ChatPlexMod_ChatIntegrations.Actions
         ////////////////////////////////////////////////////////////////////////////
 
         private void OnSettingChanged()
-            => Model.SceneName = m_Scene.Element.GetValue();
+        {
+            /// Do not saved if OBS is not connected
+            if (OBSService.Status != OBSService.EStatus.Connected)
+                return;
+
+            Model.SceneName = m_Scene.Element.GetValue();
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -790,7 +822,17 @@ namespace ChatPlexMod_ChatIntegrations.Actions
         public override sealed void BuildUI(Transform p_Parent)
         {
             if (OBSService.Status != OBSService.EStatus.Connected)
-                CP_SDK.Chat.Service.Multiplexer?.InternalBroadcastSystemMessage("ChatIntegrations: Action failed, not connected to OBS!");
+            {
+                XUIElements = new IXUIElement[]
+                {
+                    XUIText.Make("OBS is not connected!")
+                        .SetColor(Color.red)
+                        .SetAlign(TMPro.TextAlignmentOptions.Center)
+                };
+
+                BuildUIAuto(p_Parent);
+                return;
+            }
 
             var l_SceneChoices = new List<string>() { "<i>None</i>" };
             var l_SelectedScene = "<i>None</i>";
@@ -840,6 +882,10 @@ namespace ChatPlexMod_ChatIntegrations.Actions
 
         private void OnSettingChanged()
         {
+            /// Do not saved if OBS is not connected
+            if (OBSService.Status != OBSService.EStatus.Connected)
+                return;
+
             var l_SceneChanged = Model.SceneName != m_Scene.Element.GetValue();
 
             Model.ChangeType    = Enums.Toggle.ToEnum(m_ChangeType.Element.GetValue());
@@ -850,6 +896,10 @@ namespace ChatPlexMod_ChatIntegrations.Actions
         }
         private void OnSettingChangedSrc()
         {
+            /// Do not saved if OBS is not connected
+            if (OBSService.Status != OBSService.EStatus.Connected)
+                return;
+
             Model.SourceName = m_Source.Element.GetValue();
         }
 
@@ -962,7 +1012,17 @@ namespace ChatPlexMod_ChatIntegrations.Actions
         public override sealed void BuildUI(Transform p_Parent)
         {
             if (OBSService.Status != OBSService.EStatus.Connected)
-                CP_SDK.Chat.Service.Multiplexer?.InternalBroadcastSystemMessage("ChatIntegrations: Action failed, not connected to OBS!");
+            {
+                XUIElements = new IXUIElement[]
+                {
+                    XUIText.Make("OBS is not connected!")
+                        .SetColor(Color.red)
+                        .SetAlign(TMPro.TextAlignmentOptions.Center)
+                };
+
+                BuildUIAuto(p_Parent);
+                return;
+            }
 
             var l_SceneChoices = new List<string>() { "<i>None</i>" };
             var l_SelectedScene = "<i>None</i>";
@@ -1012,6 +1072,10 @@ namespace ChatPlexMod_ChatIntegrations.Actions
 
         private void OnSettingChanged()
         {
+            /// Do not saved if OBS is not connected
+            if (OBSService.Status != OBSService.EStatus.Connected)
+                return;
+
             var l_SceneChanged = Model.SceneName != m_Scene.Element.GetValue();
 
             Model.ChangeType    = Enums.Toggle.ToEnum(m_ChangeType.Element.GetValue());
@@ -1022,6 +1086,10 @@ namespace ChatPlexMod_ChatIntegrations.Actions
         }
         private void OnSettingChangedSrc()
         {
+            /// Do not saved if OBS is not connected
+            if (OBSService.Status != OBSService.EStatus.Connected)
+                return;
+
             Model.SourceName = m_Source.Element.GetValue();
         }
 
@@ -1140,7 +1208,17 @@ namespace ChatPlexMod_ChatIntegrations.Actions
             if (OBSService.Status == OBSService.EStatus.Connected)
                 l_TransitionChoices.AddRange(OBSService.Transitions.ToList<string>());
             else
-                CP_SDK.Chat.Service.Multiplexer?.InternalBroadcastSystemMessage("ChatIntegrations: Action failed, not connected to OBS!");
+            {
+                XUIElements = new IXUIElement[]
+                {
+                    XUIText.Make("OBS is not connected!")
+                        .SetColor(Color.red)
+                        .SetAlign(TMPro.TextAlignmentOptions.Center)
+                };
+
+                BuildUIAuto(p_Parent);
+                return;
+            }
 
             for (int l_I = 0; l_I < l_TransitionChoices.Count; ++l_I)
             {
@@ -1186,6 +1264,10 @@ namespace ChatPlexMod_ChatIntegrations.Actions
 
         private void OnSettingChanged()
         {
+            /// Do not saved if OBS is not connected
+            if (OBSService.Status != OBSService.EStatus.Connected)
+                return;
+
             Model.OverrideDuration      = m_OverrideDuration.Element.GetValue();
             Model.Duration              = (int)m_Duration.Element.GetValue();
             Model.OverrideTransition    = m_OverrideTransition.Element.GetValue();

@@ -97,6 +97,16 @@ namespace CP_SDK.UI.Components
             return this;
         }
         /// <summary>
+        /// Set pixels per unit multiplier
+        /// </summary>
+        /// <param name="p_Multiplier">New multiplier</param>
+        /// <returns></returns>
+        public virtual CImage SetPixelsPerUnitMultiplier(float p_Multiplier)
+        {
+            ImageC.pixelsPerUnitMultiplier = p_Multiplier;
+            return this;
+        }
+        /// <summary>
         /// Set sprite
         /// </summary>
         /// <param name="p_Sprite">New sprite</param>

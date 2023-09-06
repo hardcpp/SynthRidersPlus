@@ -11,42 +11,16 @@ namespace ChatPlexMod_CustomCameras.Components
     /// </summary>
     internal class CustomCamera : MonoBehaviour
     {
-        /// <summary>
-        /// Camera config path
-        /// </summary>
-        private string m_Path = "";
-        /// <summary>
-        /// Main camera cache
-        /// </summary>
-        private Camera m_MainCamera = null;
-        /// <summary>
-        /// Camera component
-        /// </summary>
-        private Camera m_CameraComponent = null;
-        /// <summary>
-        /// Camera config
-        /// </summary>
-        private Models.Camera m_CameraConfig = new Models.Camera();
-        /// <summary>
-        /// File watcher
-        /// </summary>
-        private FileSystemWatcher m_Watcher = null;
-        /// <summary>
-        /// Changed flag
-        /// </summary>
-        private bool m_Changed = false;
-        /// <summary>
-        /// Changed ignore count
-        /// </summary>
-        private int m_ChangedIgnoreCount = 0;
-        /// <summary>
-        /// Smooth coroutine instance
-        /// </summary>
-        private Coroutine m_SmoothCoroutine = null;
-        /// <summary>
-        /// Dynamic Near Far coroutine instance
-        /// </summary>
-        private Coroutine m_DynamicNearFarCoroutine = null;
+        private string              m_Path                      = "";
+        private Camera              m_MainCamera                = null;
+        private Camera              m_CameraComponent           = null;
+        private Models.Camera       m_CameraConfig              = new Models.Camera();
+        private FileSystemWatcher   m_Watcher                   = null;
+        private bool                m_Changed                   = false;
+        private int                 m_ChangedIgnoreCount        = 0;
+        private Coroutine           m_FirstPersonCoroutine      = null;
+        private Coroutine           m_SmoothCoroutine           = null;
+        private Coroutine           m_DynamicNearFarCoroutine   = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -63,6 +37,24 @@ namespace ChatPlexMod_CustomCameras.Components
         /// </summary>
         private void OnDestroy()
         {
+            if (m_FirstPersonCoroutine != null)
+            {
+                StopCoroutine(m_FirstPersonCoroutine);
+                m_FirstPersonCoroutine = null;
+            }
+
+            if (m_SmoothCoroutine != null)
+            {
+                StopCoroutine(m_SmoothCoroutine);
+                m_SmoothCoroutine = null;
+            }
+
+            if (m_DynamicNearFarCoroutine != null)
+            {
+                StopCoroutine(m_DynamicNearFarCoroutine);
+                m_DynamicNearFarCoroutine = null;
+            }
+
             if (m_Watcher != null)
             {
                 m_Watcher.Changed -= OnFileChanged;
@@ -133,6 +125,12 @@ namespace ChatPlexMod_CustomCameras.Components
                 Logger.Instance.Error(l_Exception);
             }
 
+            if (m_FirstPersonCoroutine != null)
+            {
+                StopCoroutine(m_FirstPersonCoroutine);
+                m_FirstPersonCoroutine = null;
+            }
+
             if (m_SmoothCoroutine != null)
             {
                 StopCoroutine(m_SmoothCoroutine);
@@ -145,13 +143,15 @@ namespace ChatPlexMod_CustomCameras.Components
                 m_DynamicNearFarCoroutine = null;
             }
 
-            if (m_CameraConfig.IsFirstPerson && !m_CameraConfig.SmoothCamera && m_MainCamera)
-                transform.SetParent(m_MainCamera.transform, true);
-            else
+            if (m_CameraConfig.IsFirstPerson && m_MainCamera)
+            {
+                if (m_CameraConfig.SmoothCamera && m_MainCamera)
+                    m_SmoothCoroutine = StartCoroutine(Coroutine_SmoothCamera());
+                else
+                    m_FirstPersonCoroutine = StartCoroutine(Coroutine_FirstPersonCamera());
+            }
+            else if (!m_CameraConfig.IsFirstPerson)
                 transform.SetParent(CustomCameras.Instance.RoomCorrection, true);
-
-            if (m_CameraConfig.IsFirstPerson && m_CameraConfig.SmoothCamera)
-                m_SmoothCoroutine = StartCoroutine(Coroutine_SmoothCamera());
 
             if (m_CameraConfig.RelativeNearFarOverride.Enabled)
                 m_DynamicNearFarCoroutine = StartCoroutine(Coroutine_DynamicNearFar());
@@ -246,6 +246,30 @@ namespace ChatPlexMod_CustomCameras.Components
             }
         }
         /// <summary>
+        /// First person camera coroutine
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator Coroutine_FirstPersonCamera()
+        {
+            var l_Waiter = new WaitForEndOfFrame();
+
+            var l_PositionOffset = new Vector3(m_CameraConfig.Position.X, m_CameraConfig.Position.Y, m_CameraConfig.Position.Z);
+            var l_RotationOffset = Quaternion.Euler(m_CameraConfig.Rotation.X, m_CameraConfig.Rotation.Y, m_CameraConfig.Rotation.Z);
+
+            while (m_CameraConfig.IsFirstPerson && !m_CameraConfig.SmoothCamera)
+            {
+                if (!m_MainCamera)
+                    m_MainCamera = Camera.main;
+
+                if (m_MainCamera)
+                    transform.SetPositionAndRotation(m_MainCamera.transform.position + l_PositionOffset, m_MainCamera.transform.rotation * l_RotationOffset);
+
+                yield return l_Waiter;
+            }
+
+            yield return null;
+        }
+        /// <summary>
         /// Smooth camera coroutine
         /// </summary>
         /// <returns></returns>
@@ -263,8 +287,10 @@ namespace ChatPlexMod_CustomCameras.Components
 
                 if (m_MainCamera)
                 {
-                    transform.position = Vector3.Lerp(transform.position, m_MainCamera.transform.position + l_PositionOffset, Time.smoothDeltaTime * 5f * (1f / m_CameraConfig.SmoothingFactor));
-                    transform.rotation = Quaternion.Lerp(transform.rotation, m_MainCamera.transform.rotation * l_RotationOffset, Time.smoothDeltaTime * 5f * (1f / m_CameraConfig.SmoothingFactor));
+                    var l_Position = Vector3.Lerp(transform.position, m_MainCamera.transform.position + l_PositionOffset, Time.smoothDeltaTime * 5f * (1f / m_CameraConfig.SmoothingFactor));
+                    var l_Rotation = Quaternion.Lerp(transform.rotation, m_MainCamera.transform.rotation * l_RotationOffset, Time.smoothDeltaTime * 5f * (1f / m_CameraConfig.SmoothingFactor));
+
+                    transform.SetPositionAndRotation(l_Position, l_Rotation);
                 }
 
                 yield return l_Waiter;

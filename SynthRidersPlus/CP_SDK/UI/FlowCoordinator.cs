@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using CP_SDK.UI.Views;
+using UnityEngine;
 
 namespace CP_SDK.UI
 {
@@ -30,6 +31,17 @@ namespace CP_SDK.UI
             }
 
             return m_Instance;
+        }
+        /// <summary>
+        /// Destroy
+        /// </summary>
+        public static void Destroy()
+        {
+            if (!m_Instance)
+                return;
+
+            GameObject.Destroy(m_Instance.gameObject);
+            m_Instance = null;
         }
     }
 }

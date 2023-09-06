@@ -38,7 +38,7 @@ namespace CP_SDK.UI.Modals
                 .SetHeight(50)
                 .SetSpacing(0)
                 .SetPadding(0)
-                .SetBackground(true, Color.black.WithAlpha(0.75f))
+                .SetBackground(true, UISystem.ListBGColor)
                 .OnReady(x => x.CSizeFitter.horizontalFit = x.CSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained)
                 .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
                 .OnReady(x => x.HOrVLayoutGroup.childForceExpandHeight = true),

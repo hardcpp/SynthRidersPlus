@@ -159,7 +159,7 @@ namespace CP_SDK.UI.Components
             if (m_LockIcon)
             {
                 m_LockIcon.SetSprite(p_Allow ? UISystem.GetUIIconUnlockedSprite() : UISystem.GetUIIconLockedSprite());
-                m_LockIcon.SetColor(GetAllowMovement() ? "#D0FCB3".ToUnityColor() : Color.white);
+                m_LockIcon.SetColor(GetAllowMovement() ? ColorU.ToUnityColor("#D0FCB3") : Color.white);
             }
             return this;
         }
@@ -192,7 +192,7 @@ namespace CP_SDK.UI.Components
                 m_Background.pixelsPerUnitMultiplier    = 1;
                 m_Background.type                       = Image.Type.Sliced;
                 m_Background.sprite                     = UISystem.GetUIRoundBGSprite();
-                m_Background.color                      = (p_Color.HasValue ? p_Color.Value : Color.black.WithAlpha(0.5f));
+                m_Background.color                      = (p_Color.HasValue ? p_Color.Value : UISystem.DefaultBGColor);
                 m_Background.enabled                    = true;
             }
             else if (m_Background)
@@ -260,7 +260,7 @@ namespace CP_SDK.UI.Components
                 m_LockIcon.LElement.enabled = false;
                 m_LockIcon.SetWidth(l_Width).SetHeight(l_Height);
                 m_LockIcon.SetSprite(UISystem.GetUIIconLockedSprite());
-                m_LockIcon.SetColor(GetAllowMovement() ? "#D0FCB3".ToUnityColor() : Color.white);
+                m_LockIcon.SetColor(GetAllowMovement() ? ColorU.ToUnityColor("#D0FCB3") : Color.white);
                 m_LockIcon.OnClick(() => SetAllowMovement(!GetAllowMovement()));
             }
 

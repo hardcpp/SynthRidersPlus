@@ -27,32 +27,32 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                 if (!(Cell is TextListCell l_TextListCell))
                     return;
 
-                l_TextListCell.Text.SetText((EConfig.Enabled ? "" : "<alpha=#70><s>") + EConfig.Name);
+                l_TextListCell.Text.SetText((EConfig.Enabled ? "" : "<alpha=#70>") + EConfig.Name);
             }
         }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        private XUITabControl   m_TabControl = null;
+        private XUITabControl           m_TabControl = null;
 
-        private XUIToggle       m_GeneralTab_MenuRain           = null;
-        private XUISlider       m_GeneralTab_MenuRainSize       = null;
-        private XUISlider       m_GeneralTab_MenuFallSpeed      = null;
-        private XUIToggle       m_GeneralTab_PlayingRain        = null;
-        private XUISlider       m_GeneralTab_PlayingRainSize    = null;
-        private XUISlider       m_GeneralTab_PlayingFallSpeed   = null;
+        private XUIToggle               m_GeneralTab_MenuRain           = null;
+        private XUISlider               m_GeneralTab_MenuRainSize       = null;
+        private XUISlider               m_GeneralTab_MenuFallSpeed      = null;
+        private XUIToggle               m_GeneralTab_PlayingRain        = null;
+        private XUISlider               m_GeneralTab_PlayingRainSize    = null;
+        private XUISlider               m_GeneralTab_PlayingFallSpeed   = null;
 
-        private XUIVVList       m_MenuEmittersTab_List          = null;
-        private EmitterWidget   m_MenuEmittersTab_EmitterWidget = new EmitterWidget();
+        private XUIVVList               m_MenuEmittersTab_List          = null;
+        private Widgets.EmitterWidget   m_MenuEmittersTab_EmitterWidget = null;
 
-        private XUIVVList       m_PlayingEmittersTab_List           = null;
-        private EmitterWidget   m_PlayingEmittersTab_EmitterWidget  = new EmitterWidget();
+        private XUIVVList               m_PlayingEmittersTab_List           = null;
+        private Widgets.EmitterWidget   m_PlayingEmittersTab_EmitterWidget  = null;
 
-        private XUIToggle       m_CommandsTab_ModeratorPowerToggle     = null;
-        private XUIToggle       m_CommandsTab_VIPPowerToggle           = null;
-        private XUIToggle       m_CommandsTab_SubscriberPowerToggle    = null;
-        private XUIToggle       m_CommandsTab_UserPowerToggle          = null;
+        private XUIToggle               m_CommandsTab_ModeratorPowerToggle     = null;
+        private XUIToggle               m_CommandsTab_VIPPowerToggle           = null;
+        private XUIToggle               m_CommandsTab_SubscriberPowerToggle    = null;
+        private XUIToggle               m_CommandsTab_UserPowerToggle          = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                 .OnActiveChanged(OnTabSelected)
                 .Bind(ref m_TabControl)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
 
             RefreshSettings();
@@ -196,7 +196,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                 .SetPadding(0)
                 .OnReady(x => x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained)
                 .OnReady(x => x.LElement.flexibleWidth = 1000.0f)
-                .OnReady(x => m_MenuEmittersTab_EmitterWidget = x.gameObject.AddComponent<EmitterWidget>())
+                .OnReady(x => m_MenuEmittersTab_EmitterWidget = x.gameObject.AddComponent<Widgets.EmitterWidget>())
             )
             .SetSpacing(0).SetPadding(0)
             .OnReady(x => x.CSizeFitter.enabled = false)
@@ -239,7 +239,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                 .SetPadding(0)
                 .OnReady(x => x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained)
                 .OnReady(x => x.LElement.flexibleWidth = 1000.0f)
-                .OnReady(x => m_PlayingEmittersTab_EmitterWidget = x.gameObject.AddComponent<EmitterWidget>())
+                .OnReady(x => m_PlayingEmittersTab_EmitterWidget = x.gameObject.AddComponent<Widgets.EmitterWidget>())
             )
             .SetSpacing(0).SetPadding(0)
             .OnReady(x => x.CSizeFitter.enabled = false)

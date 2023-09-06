@@ -85,7 +85,7 @@ namespace CP_SDK.Chat.Services.Twitch
                         foreach (JSONObject l_Object in l_JSONEmotes)
                         {
                             string l_URI        = $"https://cdn.betterttv.net/emote/{l_Object["id"].Value}/2x";
-                            string l_Identifier = l_Object["code"].Value;
+                            string l_Identifier = $"{p_ChannelID}_{l_Object["code"].Value}";
 
                             Resources.TryAdd(l_Identifier, new ChatResourceData()
                             {

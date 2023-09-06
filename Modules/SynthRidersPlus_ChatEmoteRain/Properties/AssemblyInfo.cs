@@ -32,8 +32,8 @@ using System.Runtime.InteropServices;
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de build et de révision par défaut
 // en utilisant '*', comme indiqué ci-dessous :
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("6.0.4")]
-[assembly: AssemblyFileVersion("6.0.4")]
-[assembly: MelonInfo(typeof(SynthRidersPlus_ChatEmoteRain.Mod), "SynthRidersPlus_ChatEmoteRain", "6.0.4", "HardCPP#1985")]
+[assembly: AssemblyVersion("6.1.0")]
+[assembly: AssemblyFileVersion("6.1.0")]
+[assembly: MelonInfo(typeof(SynthRidersPlus_ChatEmoteRain.Mod), "SynthRidersPlus_ChatEmoteRain", "6.1.0", "HardCPP#1985")]
 [assembly: MelonGame("Kluge Interactive", "SynthRiders")]
 [assembly: MelonAdditionalDependencies("SynthRidersPlus")]

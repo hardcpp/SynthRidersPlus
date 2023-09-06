@@ -61,7 +61,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                     XUISecondaryButton.Make("Test it", OnTestSubRainButton)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
 

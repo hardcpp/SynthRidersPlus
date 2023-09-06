@@ -39,7 +39,7 @@ namespace ChatPlexMod_ChatIntegrations.Interfaces
 
             var l_FinalList = new List<IXUIElement>()
             {
-                XUIText.Make(l_Title).SetStyle(FontStyles.Bold | FontStyles.Underline).SetAlign(TextAlignmentOptions.Center)
+                XUIText.Make(l_Title).SetStyle(FontStyles.Bold).SetAlign(TextAlignmentOptions.Center)
             };
 
             if (XUIElements != null)

@@ -72,7 +72,7 @@ namespace CP_SDK.UI.DefaultComponents
 
             var l_ScrollBarBG = l_ScrollBar.gameObject.AddComponent(UISystem.Override_UnityComponent_Image) as Image;
             l_ScrollBarBG.material                  = UISystem.Override_GetUIMaterial();
-            l_ScrollBarBG.color                     = "#202020".ToUnityColor().WithAlpha(0.7f);
+            l_ScrollBarBG.color                     = ColorU.WithAlpha("#202020", 0.7f);
             l_ScrollBarBG.pixelsPerUnitMultiplier   = 1;
             l_ScrollBarBG.type                      = Image.Type.Sliced;
             l_ScrollBarBG.raycastTarget             = false;

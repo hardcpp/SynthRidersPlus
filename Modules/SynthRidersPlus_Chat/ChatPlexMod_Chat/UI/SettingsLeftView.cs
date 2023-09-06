@@ -9,7 +9,7 @@ namespace ChatPlexMod_Chat.UI
     internal sealed class SettingsLeftView : CP_SDK.UI.ViewController<SettingsLeftView>
     {
         private static readonly string s_InformationStr =
-                     "<u><b>Thanks to <b>brian</b> for original ChatCore lib</b></u>"
+                     "<b>Thanks to <b>brian</b> for original ChatCore lib</b>"
             + "\n" + " - https://github.com/brian91292/ChatCore";
 
         ////////////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ namespace ChatPlexMod_Chat.UI
                     XUISecondaryButton.Make("Documentation", OnDocumentationButton)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
 

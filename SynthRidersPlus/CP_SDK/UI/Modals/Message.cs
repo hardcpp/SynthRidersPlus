@@ -1,7 +1,7 @@
-﻿using CP_SDK.Unity.Extensions;
-using CP_SDK.XUI;
+﻿using CP_SDK.XUI;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CP_SDK.UI.Modals
 {
@@ -31,8 +31,10 @@ namespace CP_SDK.UI.Modals
                         .SetColor(Color.yellow)
                         .Bind(ref m_Message)
                 )
-                .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
-                .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained),
+                .OnReady((x) => {
+                    x.HOrVLayoutGroup.childForceExpandWidth = true;
+                    x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+                }),
 
                 XUIHLayout.Make(
                     XUIPrimaryButton.Make("OK", OnOKButton).SetWidth(20f)
@@ -67,7 +69,7 @@ namespace CP_SDK.UI.Modals
         ////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
-        /// On button "Yes" pressed
+        /// On button "OK" pressed
         /// </summary>
         private void OnOKButton()
         {

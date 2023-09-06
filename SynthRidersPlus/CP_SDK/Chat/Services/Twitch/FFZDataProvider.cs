@@ -65,7 +65,7 @@ namespace CP_SDK.Chat.Services.Twitch
                         JSONObject l_URLs = l_Object["urls"].AsObject;
 
                         string l_URI = l_URLs[l_URLs.Count - 1].Value;
-                        string l_ID  = l_IsGlobal ? l_Object["name"].Value : $"{p_ChannelName}_{l_Object["name"].Value}";
+                        string l_ID  = l_IsGlobal ? l_Object["name"].Value : $"{p_ChannelID}_{l_Object["name"].Value}";
 
                         if (l_URI.Length > 0 && l_URI[0] == '/')
                             l_URI = "https:" + l_URI;

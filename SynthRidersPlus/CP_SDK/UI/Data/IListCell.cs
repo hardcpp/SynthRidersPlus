@@ -16,6 +16,7 @@ namespace CP_SDK.UI.Data
         private Components.CVXList  m_OwnerList;
         private int                 m_Index;
         private IListItem           m_ListItem;
+        private bool                m_Stateless;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -95,6 +96,9 @@ namespace CP_SDK.UI.Data
             if (!m_RTransform)
                 return;
 
+            if (m_Stateless)
+                p_State = false;
+
             var l_IsOdd  = ((Index & 1) != 0) ? true : false;
             var l_Colors = m_Button.colors;
             l_Colors.normalColor        = new Color32(255, 255, 255, p_State ? (byte)100 : (l_IsOdd ? (byte)15 : (byte)0));
@@ -104,6 +108,29 @@ namespace CP_SDK.UI.Data
             l_Colors.disabledColor      = new Color32(127, 127, 127, p_State ? (byte)100 : (byte)75);
             l_Colors.fadeDuration       = 0.05f;
             m_Button.colors = l_Colors;
+        }
+        /// <summary>
+        /// Set is stateless
+        /// </summary>
+        /// <param name="p_Stateless">New value</param>
+        public void SetStateless(bool p_Stateless)
+        {
+            m_Stateless = p_Stateless;
+
+            if (p_Stateless)
+                SetState(false);
+        }
+        /// <summary>
+        /// Set is selectable
+        /// </summary>
+        /// <param name="p_Selectable">New state</param>
+        public void SetSelectable(bool p_Selectable)
+        {
+            if (!m_Button || !m_Image)
+                return;
+
+            m_Image.enabled     = p_Selectable;
+            m_Button.enabled    = p_Selectable;
         }
         /// <summary>
         /// Get cell height

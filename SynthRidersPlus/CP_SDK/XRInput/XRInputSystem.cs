@@ -1,7 +1,5 @@
 ﻿#if CP_SDK_XR_INPUT
-using CP_SDK.Unity;
 using CP_SDK.Unity.Extensions;
-using FlexiGUI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -262,8 +260,8 @@ namespace CP_SDK.XRInput
             l_PointerData.delta                 = l_WasCreated ? Vector2.zero : l_FirstRaycast.screenPosition - l_PointerData.position;
             l_PointerData.position              = l_FirstRaycast.screenPosition;
 
-            if (RaycastingController && l_FirstRaycast.gameObject)
-                XRLaserPointer.Instance.SetDistance(l_FirstRaycast.distance);
+            if (RaycastingController)
+                XRLaserPointer.Instance.SetDistance(l_FirstRaycast.gameObject ? l_FirstRaycast.distance : 0f);
 
             var l_StateForMouseButton = PointerEventData.FramePressState.NotChanged;
             if (l_RaycastingController && l_RaycastingController.isActiveAndEnabled)
@@ -330,6 +328,9 @@ namespace CP_SDK.XRInput
         /// <param name="p_PointerEventData">Last pointer event data</param>
         private void DeselectIfSelectionChanged(GameObject p_CurrentHover, BaseEventData p_PointerEventData)
         {
+            if (!p_CurrentHover || !EventSystem.current)
+                return;
+
             var l_EventHandler = ExecuteEvents.GetEventHandler<ISelectHandler>(p_CurrentHover);
             if (l_EventHandler == EventSystem.current.currentSelectedGameObject)
                 return;

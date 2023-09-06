@@ -10,14 +10,14 @@ namespace CP_SDK.UI.DefaultComponents
     {
         private RectTransform                   m_RTransform;
         private LayoutElement                   m_LElement;
-        private Image                           m_Image;
+        private Image                           m_ImageC;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
         public override RectTransform   RTransform  => m_RTransform;
         public override LayoutElement   LElement    => m_LElement;
-        public override Image           ImageC      => m_Image;
+        public override Image           ImageC      => m_ImageC;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -37,13 +37,13 @@ namespace CP_SDK.UI.DefaultComponents
 
             m_LElement = gameObject.AddComponent<LayoutElement>();
 
-            m_Image = gameObject.AddComponent(UISystem.Override_UnityComponent_Image) as Image;
-            m_Image.material                = UISystem.Override_GetUIMaterial();
-            m_Image.type                    = Image.Type.Simple;
-            m_Image.pixelsPerUnitMultiplier = 1;
-            m_Image.sprite                  = UISystem.GetUIRectBGSprite();
-            m_Image.preserveAspect          = true;
-            m_Image.raycastTarget           = false;
+            m_ImageC = gameObject.AddComponent(UISystem.Override_UnityComponent_Image) as Image;
+            m_ImageC.material                = UISystem.Override_GetUIMaterial();
+            m_ImageC.type                    = Image.Type.Simple;
+            m_ImageC.pixelsPerUnitMultiplier = 1;
+            m_ImageC.sprite                  = UISystem.GetUIRectBGSprite();
+            m_ImageC.preserveAspect          = true;
+            m_ImageC.raycastTarget           = false;
         }
     }
 }

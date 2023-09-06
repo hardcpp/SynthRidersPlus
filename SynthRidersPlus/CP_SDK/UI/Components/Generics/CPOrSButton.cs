@@ -6,16 +6,18 @@ using UnityEngine.UI;
 namespace CP_SDK.UI.Components
 {
     /// <summary>
-    /// Primary of Secondary button component
+    /// Primary or Secondary button component
     /// </summary>
     public abstract class CPOrSButton : MonoBehaviour
     {
         public abstract RectTransform       RTransform          { get; }
         public abstract ContentSizeFitter   CSizeFitter         { get; }
+        public abstract LayoutGroup         LayoutGroupC        { get; }
         public abstract LayoutElement       LElement            { get; }
         public abstract Button              ButtonC             { get; }
         public abstract Image               BackgroundImageC    { get; }
         public abstract Image               IconImageC          { get; }
+        public abstract CText               TextC               { get; }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -35,7 +37,10 @@ namespace CP_SDK.UI.Components
         /// Get text
         /// </summary>
         /// <returns></returns>
-        public abstract string GetText();
+        public string GetText()
+        {
+            return TextC.GetText();
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -92,7 +97,11 @@ namespace CP_SDK.UI.Components
         /// </summary>
         /// <param name="p_Size">New size</param>
         /// <returns></returns>
-        public abstract CPOrSButton SetFontSize(float p_Size);
+        public CPOrSButton SetFontSize(float p_Size)
+        {
+            TextC.SetFontSize(p_Size);
+            return this;
+        }
         /// <summary>
         /// Set theme color
         /// </summary>
@@ -129,13 +138,21 @@ namespace CP_SDK.UI.Components
         /// </summary>
         /// <param name="p_OverflowMode">New overflow mdoe</param>
         /// <returns></returns>
-        public abstract CPOrSButton SetOverflowMode(TextOverflowModes p_OverflowMode);
+        public CPOrSButton SetOverflowMode(TextOverflowModes p_OverflowMode)
+        {
+            TextC.SetOverflowMode(p_OverflowMode);
+            return this;
+        }
         /// <summary>
         /// Set button text
         /// </summary>
         /// <param name="p_Text">New text</param>
         /// <returns></returns>
-        public abstract CPOrSButton SetText(string p_Text);
+        public CPOrSButton SetText(string p_Text)
+        {
+            TextC.SetText(p_Text);
+            return this;
+        }
         /// <summary>
         /// Set tooltip
         /// </summary>

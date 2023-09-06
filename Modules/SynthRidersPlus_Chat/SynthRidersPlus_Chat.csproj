@@ -79,7 +79,7 @@
     <Compile Include="ChatPlexMod_Chat\Extensions\EnhancedFontInfo.cs" />
     <Compile Include="ChatPlexMod_Chat\Logger.cs" />
     <Compile Include="ChatPlexMod_Chat\UI\ChatFloatingPanelView.cs" />
-    <Compile Include="ChatPlexMod_Chat\UI\ChatUserListItem.cs" />
+    <Compile Include="ChatPlexMod_Chat\UI\Data\ChatUserListItem.cs" />
     <Compile Include="ChatPlexMod_Chat\UI\HypeTrainFloatingPanelView.cs" />
     <Compile Include="ChatPlexMod_Chat\UI\ModerationLeftView.cs" />
     <Compile Include="ChatPlexMod_Chat\UI\ModerationMainView.cs" />

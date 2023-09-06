@@ -49,6 +49,6 @@ namespace CP_SDK.UI.Data
         /// <param name="p_Target">Target gameobject</param>
         /// <returns></returns>
         protected override IListCell AddSelfComponent(GameObject p_Target)
-            => p_Target.AddComponent<TextListCell>();
+            => p_Target.GetComponent<TextListCell>() ?? p_Target.AddComponent<TextListCell>();
     }
 }

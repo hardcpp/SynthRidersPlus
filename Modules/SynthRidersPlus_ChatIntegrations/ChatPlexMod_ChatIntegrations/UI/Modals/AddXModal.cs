@@ -1,14 +1,12 @@
 ﻿using CP_SDK;
 using CP_SDK.UI.Data;
-using CP_SDK.Unity.Extensions;
 using CP_SDK.XUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using UnityEngine.UI;
 
-namespace ChatPlexMod_ChatIntegrations.UI
+namespace ChatPlexMod_ChatIntegrations.UI.Modals
 {
     /// <summary>
     /// Add Condition/Action modal
@@ -65,7 +63,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
                     )
                     .SetSpacing(0).SetPadding(0)
                     .SetWidth(40.0f).SetHeight(50.0f)
-                    .SetBackground(true, Color.black.WithAlpha(0.75f))
+                    .SetBackground(true, CP_SDK.UI.UISystem.ListBGColor)
                     .OnReady(x => x.CSizeFitter.horizontalFit = x.CSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained)
                     .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
                     .OnReady(x => x.HOrVLayoutGroup.childForceExpandHeight = true),
@@ -77,7 +75,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
                     )
                     .SetSpacing(0).SetPadding(0)
                     .SetWidth(80.0f).SetHeight(50.0f)
-                    .SetBackground(true, Color.black.WithAlpha(0.75f))
+                    .SetBackground(true, CP_SDK.UI.UISystem.ListBGColor)
                     .OnReady(x => x.CSizeFitter.horizontalFit = x.CSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained)
                     .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
                     .OnReady(x => x.HOrVLayoutGroup.childForceExpandHeight = true)

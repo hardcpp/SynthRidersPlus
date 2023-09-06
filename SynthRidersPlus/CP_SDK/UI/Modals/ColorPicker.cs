@@ -133,8 +133,7 @@ namespace CP_SDK.UI.Modals
         /// </summary>
         private void OnColorChanged()
         {
-            var l_Color = Color.HSVToRGB(m_H.Element.GetValue(), m_S.Element.GetValue(), m_V.Element.GetValue())
-                .WithAlpha(m_O.Element.GetValue());
+            var l_Color = ColorU.WithAlpha(Color.HSVToRGB(m_H.Element.GetValue(), m_S.Element.GetValue(), m_V.Element.GetValue()), m_O.Element.GetValue());
 
             m_Image.SetColor(l_Color);
             m_S.ColorModeSetHue(m_H.Element.GetValue());

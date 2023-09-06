@@ -4,7 +4,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace ChatPlexMod_ChatEmoteRain.UI
+namespace ChatPlexMod_ChatEmoteRain.UI.Widgets
 {
     /// <summary>
     /// Emitter widget
@@ -46,7 +46,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
         /// </summary>
         private void Awake()
         {
-            Action<CP_SDK.UI.Components.CText> l_ControlsTextStyle = (x) => x.SetStyle(FontStyles.Bold | FontStyles.Underline).SetColor(Color.yellow);
+            Action<CP_SDK.UI.Components.CText> l_ControlsTextStyle = (x) => x.SetStyle(FontStyles.Bold).SetColor(Color.yellow);
 
             XUIVLayout.Make(
                 XUIText.Make("Please select an emitter in the list!").OnReady(l_ControlsTextStyle)
@@ -92,7 +92,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                     .SetPadding(0)
                     .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained)
                     .OnReady(x => x.LElement.flexibleWidth = 1000.0f)
-                    .ForEachDirect<XUISlider>(x => x.SetColor("#c869ff".ToUnityColor()).OnValueChanged((_) => OnSettingChanged()))
+                    .ForEachDirect<XUISlider>(x => x.SetColor(ColorU.ToUnityColor("#c869ff")).OnValueChanged((_) => OnSettingChanged()))
                 )
                 .SetSpacing(0).SetPadding(1)
                 .SetBackground(true)
@@ -109,7 +109,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                     .SetPadding(0)
                     .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained)
                     .OnReady(x => x.LElement.flexibleWidth = 1000.0f)
-                    .ForEachDirect<XUISlider>(x => x.SetColor("#3d9eff".ToUnityColor()).OnValueChanged((_) => OnSettingChanged()))
+                    .ForEachDirect<XUISlider>(x => x.SetColor(ColorU.ToUnityColor("#3d9eff")).OnValueChanged((_) => OnSettingChanged()))
                 )
                 .SetSpacing(0).SetPadding(1)
                 .SetBackground(true)
@@ -126,7 +126,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                     .SetPadding(0)
                     .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained)
                     .OnReady(x => x.LElement.flexibleWidth = 1000.0f)
-                    .ForEachDirect<XUISlider>(x => x.SetColor("#FF6C11".ToUnityColor()).OnValueChanged((_) => OnSettingChanged()))
+                    .ForEachDirect<XUISlider>(x => x.SetColor(ColorU.ToUnityColor("#FF6C11")).OnValueChanged((_) => OnSettingChanged()))
                 )
                 .SetSpacing(0).SetPadding(1)
                 .SetBackground(true)

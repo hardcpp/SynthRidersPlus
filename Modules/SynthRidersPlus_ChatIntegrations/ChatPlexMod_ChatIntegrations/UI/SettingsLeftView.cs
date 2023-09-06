@@ -12,7 +12,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
                      "<b>Special thanks to HypersonicSharkz#3301 for help on TwitchAPI and some Actions code!"
             + "\n" + "This module allow you execute actions on your game when triggered by events."
             + "\n" + ""
-            + "\n" + "<b><u>Events</u></b>"
+            + "\n" + "<b>Events</b>"
             + "\n" + "- <color=yellow><b>ChatBits</b></color>\n<i><color=#CCCCCCFF>When someone spends bits your channel!</color></i>"
             + "\n" + "- <color=yellow><b>ChatCommand</b></color>\n<i><color=#CCCCCCFF>Allow you to create chat commands and execute actions with them</color></i>"
             + "\n" + "- <color=yellow><b>ChatFollow</b></color>\n<i><color=#CCCCCCFF>When someone follows your channel</color></i>"
@@ -50,7 +50,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
                     XUISecondaryButton.Make("Documentation", OnDocumentationButton)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
 

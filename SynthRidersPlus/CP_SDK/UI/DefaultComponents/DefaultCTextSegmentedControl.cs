@@ -138,7 +138,7 @@ namespace CP_SDK.UI.DefaultComponents
                 l_Background.material                   = UISystem.Override_GetUIMaterial();
                 l_Background.type                       = Image.Type.Sliced;
                 l_Background.pixelsPerUnitMultiplier    = 1;
-                l_Background.color                      = "#727272".ToUnityColor();
+                l_Background.color                      = ColorU.ToUnityColor("#727272");
 
                 if (p_Texts.Length == 1)
                     l_Background.sprite = UISystem.GetUIRoundBGSprite();
@@ -156,13 +156,14 @@ namespace CP_SDK.UI.DefaultComponents
                 l_Label.RTransform.anchoredPosition = Vector3.zero;
                 l_Label.SetText(p_Texts[l_I]);
                 l_Label.SetAlign(TMPro.TextAlignmentOptions.Midline);
+                l_Label.SetStyle(TMPro.FontStyles.Bold);
 
                 var l_Button = l_Control.gameObject.AddComponent<Button>();
                 l_Button.targetGraphic = l_Background;
                 l_Button.onClick.AddListener(() => OnControlClicked(l_Button, true));
 
                 var l_Colors = l_Button.colors;
-                l_Colors.normalColor = Color.white.WithAlpha(l_I == m_ActiveControl ? 0.75f : 0.25f);
+                l_Colors.normalColor = ColorU.WithAlpha(Color.white, l_I == m_ActiveControl ? 0.75f : 0.25f);
                 l_Button.colors = l_Colors;
 
                 m_Controls.Add(l_Button);
@@ -197,7 +198,7 @@ namespace CP_SDK.UI.DefaultComponents
             for (var l_I = 0; l_I < m_Controls.Count; ++l_I)
             {
                 var l_Colors = m_Controls[l_I].colors;
-                l_Colors.normalColor = Color.white.WithAlpha(l_I == l_Index ? 0.75f : 0.25f);
+                l_Colors.normalColor = ColorU.WithAlpha(Color.white, l_I == l_Index ? 0.75f : 0.25f);
                 m_Controls[l_I].colors = l_Colors;
             }
 

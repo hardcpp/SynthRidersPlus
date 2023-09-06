@@ -36,7 +36,7 @@ namespace CP_SDK.UI.Views
 
                 XUIVSpacer.Make(50f)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
 

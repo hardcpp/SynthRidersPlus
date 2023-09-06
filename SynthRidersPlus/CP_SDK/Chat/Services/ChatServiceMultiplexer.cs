@@ -19,7 +19,7 @@ namespace CP_SDK.Chat.Services
         /// <summary>
         /// Side handle of each message color
         /// </summary>
-        public Color AccentColor { get; } = Color.gray.WithAlpha(0.75f);
+        public Color AccentColor { get; } = ColorU.WithAlpha(Color.gray, 0.75f);
 
         /// <summary>
         /// p_Channels

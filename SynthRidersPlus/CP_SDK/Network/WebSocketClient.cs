@@ -10,46 +10,16 @@ namespace CP_SDK.Network
     /// </summary>
     public class WebSocketClient
     {
-        /// <summary>
-        /// Lock object
-        /// </summary>
-        private object m_LockObject = new object();
-        /// <summary>
-        /// Web socket client
-        /// </summary>
-        private System.Net.WebSockets.ClientWebSocket m_Client;
-        /// <summary>
-        /// Start time
-        /// </summary>
-        private DateTime m_StartTime;
-        /// <summary>
-        /// Endpoint
-        /// </summary>
-        private string m_URI = "";
-        /// <summary>
-        /// Cancel token
-        /// </summary>
-        private CancellationTokenSource m_CancellationToken;
-        /// <summary>
-        /// Receive buffer
-        /// </summary>
-        private byte[] m_ReceiveBuffer = new byte[1024 * 10];
-        /// <summary>
-        /// Send buffer
-        /// </summary>
-        private byte[] m_SendBuffer = new byte[1024 * 10];
-        /// <summary>
-        /// Send buffer lock
-        /// </summary>
-        private SemaphoreSlim m_SendSemaphoreSlim = new SemaphoreSlim(1, 1);
-        /// <summary>
-        /// Reconnect lock semaphore
-        /// </summary>
-        private SemaphoreSlim m_ReconnectLock = new SemaphoreSlim(1, 1);
-        /// <summary>
-        /// Is disconnecting?
-        /// </summary>
-        private bool m_Disconnecting = false;
+        private object                                  m_LockObject            = new object();
+        private System.Net.WebSockets.ClientWebSocket   m_Client;
+        private DateTime                                m_StartTime;
+        private string                                  m_URI                   = "";
+        private CancellationTokenSource                 m_CancellationToken;
+        private byte[]                                  m_ReceiveBuffer         = new byte[1024 * 10];
+        private byte[]                                  m_SendBuffer            = new byte[1024 * 10];
+        private SemaphoreSlim                           m_SendSemaphoreSlim     = new SemaphoreSlim(1, 1);
+        private SemaphoreSlim                           m_ReconnectLock         = new SemaphoreSlim(1, 1);
+        private bool                                    m_Disconnecting         = false;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -171,9 +141,13 @@ namespace CP_SDK.Network
                                         }
                                     }
                                 }
-                                catch (System.Exception)
+                                catch (System.Exception l_Exception)
                                 {
-
+                                    if (!m_Disconnecting)
+                                    {
+                                        ChatPlexSDK.Logger.Error($"[CP_SDK.Network][WebSocketClient.Connect] An exception occurred in WebSocket while reading {m_URI}");
+                                        ChatPlexSDK.Logger.Error(l_Exception);
+                                    }
                                 }
 
                                 Client_OnClose(this);
@@ -271,13 +245,15 @@ namespace CP_SDK.Network
             m_Client.Dispose();
             m_Client = null;
 
-            if (AutoReconnect && !m_CancellationToken.IsCancellationRequested)
+            if (AutoReconnect && !m_CancellationToken.IsCancellationRequested && !m_Disconnecting)
             {
                 ChatPlexSDK.Logger.Info($"[CP_SDK.Network][WebSocketClient.TryHandleReconnect] Trying to reconnect to {m_URI} in {(int)TimeSpan.FromMilliseconds(ReconnectDelay).TotalSeconds} sec");
 
                 try
                 {
                     await Task.Delay(ReconnectDelay, m_CancellationToken.Token).ConfigureAwait(false);
+                    if (m_Disconnecting)
+                        return;
                     Connect(m_URI);
 
                     ReconnectDelay *= 2;

@@ -86,7 +86,7 @@ namespace ChatPlexMod_ChatIntegrations.Events
         /// <summary>
         /// Update UI component values
         /// </summary>
-        private void UpdateUI() => m_CurrentCommandText.Element.SetText("<u>Current command:</u> " + Model.Command);
+        private void UpdateUI() => m_CurrentCommandText.Element.SetText("Current command: " + Model.Command);
         /// <summary>
         /// Rebind button pressed
         /// </summary>

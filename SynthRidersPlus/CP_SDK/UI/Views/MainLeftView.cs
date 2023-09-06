@@ -17,7 +17,7 @@ namespace CP_SDK.UI.Views
                 Templates.TitleBar("Information"),
 
                 Templates.ScrollableInfos(50,
-                    XUIText.Make($"<u><b>Welcome to {ChatPlexSDK.ProductName} by HardCPP#1985</b></u>\nVersion {ChatPlexSDK.ProductVersion}!")
+                    XUIText.Make($"<b>Welcome to {ChatPlexSDK.ProductName} by HardCPP#1985</b>\nVersion {ChatPlexSDK.ProductVersion}!")
                         .SetAlign(TMPro.TextAlignmentOptions.CaplineLeft)
                 ),
 
@@ -29,7 +29,7 @@ namespace CP_SDK.UI.Views
                     XUISecondaryButton.Make("Donate - Patreon", OnDonateButton)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
 

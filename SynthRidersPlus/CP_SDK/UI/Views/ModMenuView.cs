@@ -41,7 +41,7 @@ namespace CP_SDK.UI.Views
                 .SetHeight(60)
                 .SetSpacing(0)
                 .SetPadding(0)
-                .SetBackground(true)
+                .SetBackground(true, null, true)
                 .OnReady(x => x.CSizeFitter.horizontalFit = x.CSizeFitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained)
                 .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
                 .OnReady(x => x.HOrVLayoutGroup.childForceExpandHeight = true)

@@ -1,8 +1,8 @@
-﻿using CP_SDK.Unity.Extensions;
-using CP_SDK.XUI;
+﻿using CP_SDK.XUI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CP_SDK.UI.Modals
 {
@@ -38,10 +38,12 @@ namespace CP_SDK.UI.Modals
                     XUIPrimaryButton.Make("Paste", OnPasteButton)
                 )
                 .SetPadding(0)
-                .OnReady(x => x.HOrVLayoutGroup.childControlWidth = false)
-                .OnReady(x => x.HOrVLayoutGroup.childControlHeight = false)
-                .OnReady(x => x.HOrVLayoutGroup.childAlignment = TextAnchor.MiddleRight)
-                .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained),
+                .OnReady((x) => {
+                    x.HOrVLayoutGroup.childControlWidth = false;
+                    x.HOrVLayoutGroup.childControlHeight = false;
+                    x.HOrVLayoutGroup.childAlignment = TextAnchor.MiddleRight;
+                    x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+                }),
 
                 XUIHLayout.Make(
                     XUIText.Make("")
@@ -50,9 +52,11 @@ namespace CP_SDK.UI.Modals
                         .Bind(ref m_Text)
                 )
                 .SetPadding(2)
-                .SetBackground(true, Color.gray.WithAlpha(0.50f))
-                .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
-                .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained),
+                .SetBackground(true, UISystem.KeyboardTextBGColor)
+                .OnReady((x) => {
+                    x.HOrVLayoutGroup.childForceExpandWidth = true;
+                    x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+                }),
 
                 XUIFLayout.Make()
                     .Bind(ref m_CustomKeyLayout),
@@ -273,22 +277,27 @@ namespace CP_SDK.UI.Modals
                 if (p_ForcePrimary || char.IsHighSurrogate(l_Text[0]) || l_Text.Length > 1)
                 {
                     var l_Key = XUISecondaryButton.Make(l_Text);
-                    l_Key.SetWidth(6f);
+                    l_Key.SetWidth(6.0f);
                     l_Key.OnClick(() => OnKeyPress(l_Key.Element.GetText()));
-                    l_Key.OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained);
-                    l_Key.OnReady(x => x.LElement.flexibleWidth = 1000.0f);
+                    l_Key.OnReady((x) => {
+                        x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+                        x.LElement.flexibleWidth = 1000.0f;
+                    });
                     l_Keys.Add(l_Key);
                 }
                 else
                 {
                     var l_Key = XUIPrimaryButton.Make(l_Text);
-                    l_Key.SetWidth(6f);
+                    l_Key.SetWidth(6.0f);
                     l_Key.OnClick(() => OnKeyPress(l_Key.Element.GetText()));
 
                     if (l_Text == " " || l_Text == "0")
                     {
-                        l_Key.OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained);
-                        l_Key.OnReady(x => x.LElement.flexibleWidth = 4000.0f);
+                        l_Key.OnReady((x) =>
+                        {
+                            x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+                            x.LElement.flexibleWidth = 4000.0f;
+                        });
                     }
 
                     l_Keys.Add(l_Key);
@@ -298,7 +307,7 @@ namespace CP_SDK.UI.Modals
 
             return XUIHLayout.Make(l_Keys.ToArray())
                 .SetPadding(0).SetSpacing(1.0f)
-                .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained);
+                .OnReady(x => x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained);
         }
         /// <summary>
         /// Switch caps

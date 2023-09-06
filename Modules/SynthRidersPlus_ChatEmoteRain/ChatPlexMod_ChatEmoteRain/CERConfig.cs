@@ -59,6 +59,56 @@ namespace ChatPlexMod_ChatEmoteRain
         {
             if (p_OnCreation)
             {
+#if BOOMBOX
+                MenuEmitters.Add(new EmitterConfig()
+                {
+                    Enabled = true,
+                    Name = "Top",
+                    Size =   1.00f,
+                    Speed =  1.00f,
+                    PosX =   0.00f,
+                    PosY =  6.016f,
+                    PosZ =   4.05f,
+                    RotX =  90.00f,
+                    RotY =   0.00f,
+                    RotZ =   0.00f,
+                    SizeX =  6.84f,
+                    SizeY =  2.88f,
+                    SizeZ =  2.09f
+                });
+                SongEmitters.Add(new EmitterConfig()
+                {
+                    Enabled = true,
+                    Name = "LeftSide",
+                    Size =   1.00f,
+                    Speed =  1.00f,
+                    PosX = -10.00f,
+                    PosY =   9.00f,
+                    PosZ = 13.728f,
+                    RotX =  90.00f,
+                    RotY =   0.00f,
+                    RotZ = -31.24f,
+                    SizeX = 10.00f,
+                    SizeY =  4.50f,
+                    SizeZ =  6.12f
+                });
+                SongEmitters.Add(new EmitterConfig()
+                {
+                    Enabled = true,
+                    Name = "RightSide",
+                    Size =   1.00f,
+                    Speed =  1.00f,
+                    PosX =  10.00f,
+                    PosY =   9.00f,
+                    PosZ = 13.728f,
+                    RotX =  90.00f,
+                    RotY =   0.00f,
+                    RotZ = -31.24f,
+                    SizeX = 10.00f,
+                    SizeY =  4.50f,
+                    SizeZ =  6.12f
+                });
+#else
                 MenuEmitters.Add(new EmitterConfig()
                 {
                     Enabled = true,
@@ -107,6 +157,7 @@ namespace ChatPlexMod_ChatEmoteRain
                     SizeY =  4.50f,
                     SizeZ =  4.40f
                 });
+#endif
             }
 
             ////////////////////////////////////////////////////////////////////////////

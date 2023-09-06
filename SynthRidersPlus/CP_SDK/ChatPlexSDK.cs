@@ -132,7 +132,20 @@ namespace CP_SDK
         {
             try
             {
-                Unity.MTThreadInvoker.Stop();
+                OnGenericSceneChange        = null;
+                OnGenericMenuSceneLoaded    = null;
+
+                UI.UISystem.Destroy();
+                UI.LoadingProgressBar.Destroy();
+
+                Unity.EnhancedImageParticleMaterialProvider.Destroy();
+                Unity.EnhancedImageParticleSystemProvider.Destroy();
+
+                Unity.MTThreadInvoker.Destroy();
+                Unity.MTMainThreadInvoker.Destroy();
+                Unity.MTCoroutineStarter.Destroy();
+
+                Animation.AnimationControllerManager.Destroy();
             }
             catch (Exception p_Exception)
             {
@@ -172,9 +185,6 @@ namespace CP_SDK
 
                             /// Add plugin to the list
                             m_Modules.Add(l_Module);
-
-                            try                                 { l_Module.CheckForActivation(EIModuleBaseActivationType.OnStart);                                                          }
-                            catch (Exception p_InitException)   { Logger.Error("[CP_SDK][ChatPlexSDK.InitModules] Error on module init " + l_Module.Name); Logger.Error(p_InitException);   }
                         }
                     }
                     catch (Exception l_Exception)
@@ -184,7 +194,17 @@ namespace CP_SDK
                     }
                 }
 
-                m_Modules.Sort((x, y) => x.Name.CompareTo(y.Name));
+                m_Modules.Sort((x, y) => x.FancyName.CompareTo(y.FancyName));
+
+                for (int l_I = 0; l_I < m_Modules.Count; l_I++)
+                {
+                    var l_Module = m_Modules[l_I];
+
+                    try                               { l_Module.CheckForActivation(EIModuleBaseActivationType.OnStart);                                                        }
+                    catch (Exception p_InitException) { Logger.Error("[CP_SDK][ChatPlexSDK.InitModules] Error on module init " + l_Module.Name); Logger.Error(p_InitException); }
+                }
+
+                Chat.Service.StartServices();
             }
             catch (Exception p_Exception)
             {
@@ -210,6 +230,8 @@ namespace CP_SDK
                     Logger.Error(p_Exception);
                 }
             }
+
+            m_Modules.Clear();
         }
         /// <summary>
         /// Get modules
@@ -249,6 +271,7 @@ namespace CP_SDK
             try
             {
                 OnGenericMenuSceneLoaded?.Invoke();
+                Chat.Service.StartServices();
             }
             catch (Exception l_Exception)
             {
@@ -266,7 +289,6 @@ namespace CP_SDK
             try
             {
                 OnGenericSceneChange?.Invoke(EGenericScene.Menu);
-
                 Chat.Service.StartServices();
             }
             catch (Exception l_Exception)
@@ -285,6 +307,7 @@ namespace CP_SDK
             try
             {
                 OnGenericSceneChange?.Invoke(EGenericScene.Playing);
+                Chat.Service.StartServices();
             }
             catch (Exception l_Exception)
             {

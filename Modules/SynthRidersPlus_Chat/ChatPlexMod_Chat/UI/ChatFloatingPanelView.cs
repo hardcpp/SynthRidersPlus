@@ -13,22 +13,22 @@ namespace ChatPlexMod_Chat.UI
     /// </summary>
     internal sealed class ChatFloatingPanelView : CP_SDK.UI.ViewController<ChatFloatingPanelView>
     {
-        private static ConcurrentQueue<IChatMessage> m_BackupMessageQueue = new ConcurrentQueue<IChatMessage>();
+        private static Extensions.EnhancedFontInfo m_ChatFont = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
         private GameObject  m_EnvironmentRotationRef;
         private Vector2     m_ChatSize;
-        private bool        m_ReverseChatOrder;
         private float       m_FontSize;
+        private bool        m_ReverseChatOrder;
+        private bool        m_PlatformOriginColor;
         private Color       m_HighlightColor;
         private Color       m_TextColor;
         private Color       m_PingColor;
         private bool        m_FilterViewersCommands;
         private bool        m_FilterBroadcasterCommands;
 
-        private Extensions.EnhancedFontInfo                             m_ChatFont                  = null;
         private CP_SDK.Pool.ObjectPool<Components.ChatMessageWidget>    m_MessagePool               = null;
         private List<Components.ChatMessageWidget>                      m_MessagePool_Allocated     = new List<Components.ChatMessageWidget>();
         private List<Components.ChatMessageWidget>                      m_Messages                  = new List<Components.ChatMessageWidget>();
@@ -69,12 +69,13 @@ namespace ChatPlexMod_Chat.UI
         /// <param name="p_EnvironmentRotationRef">Flying hame HUD rotation</param>
         internal void UpdateUI(GameObject p_EnvironmentRotationRef)
         {
-            m_ChatSize          = CConfig.Instance.ChatSize;
-            m_ReverseChatOrder  = CConfig.Instance.ReverseChatOrder;
-            m_FontSize          = CConfig.Instance.FontSize;
-            m_HighlightColor    = CConfig.Instance.HighlightColor;
-            m_TextColor         = CConfig.Instance.TextColor;
-            m_PingColor         = CConfig.Instance.PingColor;
+            m_ChatSize              = CConfig.Instance.ChatSize;
+            m_FontSize              = CConfig.Instance.FontSize;
+            m_ReverseChatOrder      = CConfig.Instance.ReverseChatOrder;
+            m_PlatformOriginColor   = CConfig.Instance.PlatformOriginColor;
+            m_HighlightColor        = CConfig.Instance.HighlightColor;
+            m_TextColor             = CConfig.Instance.TextColor;
+            m_PingColor             = CConfig.Instance.PingColor;
 
             m_FilterViewersCommands     = CConfig.Instance.FilterViewersCommands;
             m_FilterBroadcasterCommands = CConfig.Instance.FilterBroadcasterCommands;
@@ -136,11 +137,8 @@ namespace ChatPlexMod_Chat.UI
         /// </summary>
         private void InitLogic()
         {
-            m_ChatFont = new Extensions.EnhancedFontInfo(CP_SDK.Unity.FontManager.GetChatFont());
-
-            /// Clean reserved characters
-            m_ChatFont.Font.characterTable.RemoveAll(x => x.glyphIndex > 0xE000 && x.glyphIndex <= 0xF8FF);
-            m_ChatFont.Font.characterTable.RemoveAll(x => x.glyphIndex > 0xF0000);
+            if (m_ChatFont == null)
+                m_ChatFont = new Extensions.EnhancedFontInfo(CP_SDK.Unity.FontManager.GetChatFont());
 
             /// Setup message pool
             m_MessagePool = new CP_SDK.Pool.ObjectPool<Components.ChatMessageWidget>(
@@ -212,40 +210,18 @@ namespace ChatPlexMod_Chat.UI
                 collectionCheck: false,
                 defaultCapacity: 25
             );
-
-            while (m_BackupMessageQueue.TryDequeue(out var l_Current))
-                OnTextMessageReceived(null, l_Current);
         }
         /// <summary>
         /// Destroy logic
         /// </summary>
         private void DestroyLogic()
         {
-            /// Backup messages
-            for (int l_I = 0; l_I < m_Messages.Count; ++l_I)
-            {
-                var l_Current = m_Messages[l_I];
-                if (l_Current.Text.ChatMessage != null)
-                    m_BackupMessageQueue.Enqueue(l_Current.Text.ChatMessage);
-
-                if (l_Current.SubText.ChatMessage != null)
-                    m_BackupMessageQueue.Enqueue(l_Current.SubText.ChatMessage);
-
-                m_MessagePool.Release(m_Messages[l_I]);
-            }
-
             m_Messages.Clear();
 
             if (m_MessagePool != null)
             {
                 m_MessagePool.Dispose();
                 m_MessagePool = null;
-            }
-
-            if (m_ChatFont != null)
-            {
-                Destroy(m_ChatFont.Font);
-                m_ChatFont = null;
             }
         }
 
@@ -307,7 +283,7 @@ namespace ChatPlexMod_Chat.UI
         /// <param name="p_SetAllDirty">Should flag childs dirty</param>
         private void UpdateMessageStyle(Components.ChatMessageWidget p_Message)
         {
-            p_Message.AccentEnabled = true;
+            p_Message.AccentEnabled = m_PlatformOriginColor;
             p_Message.AccentColor   = p_Message.Service?.AccentColor ?? Color.gray;
 
             if (p_Message.Text.ChatMessage == null)
@@ -363,7 +339,7 @@ namespace ChatPlexMod_Chat.UI
         /// <param name="p_Message">System message</param>
         internal void OnSystemMessage(IChatService p_Service, string p_Message)
         {
-            var l_MessageStr = $"<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] {p_Message}</color>";
+            var l_MessageStr = $"<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] {p_Message}";
 
             CP_SDK.Unity.MTMainThreadInvoker.Enqueue(() =>
             {
@@ -371,7 +347,7 @@ namespace ChatPlexMod_Chat.UI
                 l_NewMessage.Text.ReplaceContent(l_MessageStr);
                 l_NewMessage.Service            = p_Service;
                 l_NewMessage.HighlightEnabled   = true;
-                l_NewMessage.HighlightColor     = Color.gray.WithAlpha(0.18f);
+                l_NewMessage.HighlightColor     = ColorU.WithAlpha(Color.gray, 0.18f);
 
                 AddMessage(l_NewMessage);
                 m_LastMessage = l_NewMessage;
@@ -383,7 +359,7 @@ namespace ChatPlexMod_Chat.UI
         /// <param name="p_Service">Chat service</param>
         internal void OnLogin(IChatService p_Service)
         {
-            var l_MessageStr = $"<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] Success connecting to <b>{p_Service.DisplayName}</b></color>";
+            var l_MessageStr = $"<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] Success connecting to <b>{p_Service.DisplayName}";
 
             CP_SDK.Unity.MTMainThreadInvoker.Enqueue(() =>
             {
@@ -391,7 +367,7 @@ namespace ChatPlexMod_Chat.UI
                 l_NewMessage.Text.ReplaceContent(l_MessageStr);
                 l_NewMessage.Service            = p_Service;
                 l_NewMessage.HighlightEnabled   = true;
-                l_NewMessage.HighlightColor     = Color.gray.WithAlpha(0.18f);
+                l_NewMessage.HighlightColor     = ColorU.WithAlpha(Color.gray, 0.18f);
 
                 AddMessage(l_NewMessage);
                 m_LastMessage = l_NewMessage;
@@ -405,7 +381,7 @@ namespace ChatPlexMod_Chat.UI
         internal void OnJoinChannel(IChatService p_Service, IChatChannel p_Channel)
         {
             var l_Prefix        = !string.IsNullOrEmpty(p_Channel.Prefix) ? $"<b><color=yellow>[{p_Channel.Prefix}]</color></b> " : string.Empty;
-            var l_MessageStr    = $"<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] Success joining {l_Prefix}<b>{p_Channel.Name}</b></color>";
+            var l_MessageStr    = $"<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] Success joining {l_Prefix}<b>{p_Channel.Name}";
 
             CP_SDK.Unity.MTMainThreadInvoker.Enqueue(() =>
             {
@@ -413,7 +389,7 @@ namespace ChatPlexMod_Chat.UI
                 l_NewMessage.Text.ReplaceContent(l_MessageStr);
                 l_NewMessage.Service            = p_Service;
                 l_NewMessage.HighlightEnabled   = true;
-                l_NewMessage.HighlightColor     = Color.gray.WithAlpha(0.18f);
+                l_NewMessage.HighlightColor     = ColorU.WithAlpha(Color.gray, 0.18f);
 
                 AddMessage(l_NewMessage);
                 m_LastMessage = l_NewMessage;
@@ -427,7 +403,7 @@ namespace ChatPlexMod_Chat.UI
         internal void OnLeaveChannel(IChatService p_Service, IChatChannel p_Channel)
         {
             var l_Prefix        = !string.IsNullOrEmpty(p_Channel.Prefix) ? $"<b><color=yellow>[{p_Channel.Prefix}]</color></b> " : string.Empty;
-            var l_MessageStr    = $"<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] Success leaving {l_Prefix}<b>{p_Channel.Name}</b></color>";
+            var l_MessageStr    = $"<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] Success leaving {l_Prefix}<b>{p_Channel.Name}";
 
             CP_SDK.Unity.MTMainThreadInvoker.Enqueue(() =>
             {
@@ -435,7 +411,7 @@ namespace ChatPlexMod_Chat.UI
                 l_NewMessage.Text.ReplaceContent(l_MessageStr);
                 l_NewMessage.Service            = p_Service;
                 l_NewMessage.HighlightEnabled   = true;
-                l_NewMessage.HighlightColor     = Color.gray.WithAlpha(0.18f);
+                l_NewMessage.HighlightColor     = ColorU.WithAlpha(Color.gray, 0.18f);
 
                 AddMessage(l_NewMessage);
                 m_LastMessage = l_NewMessage;
@@ -453,7 +429,7 @@ namespace ChatPlexMod_Chat.UI
                 return;
 
             var l_Prefix        = !string.IsNullOrEmpty(p_Channel.Prefix) ? $"<b><color=yellow>[{p_Channel.Prefix}]</color></b> " : string.Empty;
-            var l_MessageStr    = $"{l_Prefix}<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <b><color={p_User.Color}>@{p_User.PaintedName}</color></b> is now following <b><color={p_User.Color}>{p_Channel.Name}</color></b></color>";
+            var l_MessageStr    = $"{l_Prefix}<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <b><color={p_User.Color}>@{p_User.PaintedName}</color></b> is now following <b><color={p_User.Color}>{p_Channel.Name}</color>";
 
             CP_SDK.Unity.MTMainThreadInvoker.Enqueue(() =>
             {
@@ -461,7 +437,7 @@ namespace ChatPlexMod_Chat.UI
                 l_NewMessage.Text.ReplaceContent(l_MessageStr);
                 l_NewMessage.Service            = p_Service;
                 l_NewMessage.HighlightEnabled   = true;
-                l_NewMessage.HighlightColor     = Color.blue.WithAlpha(0.24f);
+                l_NewMessage.HighlightColor     = ColorU.WithAlpha(Color.blue, 0.24f);
 
                 AddMessage(l_NewMessage);
                 m_LastMessage = l_NewMessage;
@@ -480,7 +456,7 @@ namespace ChatPlexMod_Chat.UI
                 return;
 
             var l_Prefix        = !string.IsNullOrEmpty(p_Channel.Prefix) ? $"<b><color=yellow>[{p_Channel.Prefix}]</color></b> " : string.Empty;
-            var l_MessageStr    = $"{l_Prefix}<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <b><color={p_User.Color}>@{p_User.PaintedName}</color></b> cheered <b>{p_BitsUsed}</b> bits!</color>";
+            var l_MessageStr    = $"{l_Prefix}<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <b><color={p_User.Color}>@{p_User.PaintedName}</color></b> cheered <b>{p_BitsUsed}</b> bits!";
 
             CP_SDK.Unity.MTMainThreadInvoker.Enqueue(() =>
             {
@@ -488,7 +464,7 @@ namespace ChatPlexMod_Chat.UI
                 l_NewMessage.Text.ReplaceContent(l_MessageStr);
                 l_NewMessage.Service            = p_Service;
                 l_NewMessage.HighlightEnabled   = true;
-                l_NewMessage.HighlightColor     = Color.green.WithAlpha(0.24f);
+                l_NewMessage.HighlightColor     = ColorU.WithAlpha(Color.green, 0.24f);
 
                 AddMessage(l_NewMessage);
                 m_LastMessage = l_NewMessage;
@@ -527,12 +503,12 @@ namespace ChatPlexMod_Chat.UI
                 l_ImagePart = char.ConvertFromUtf32((int)p_Character);
 
             var l_Prefix        = !string.IsNullOrEmpty(p_Channel.Prefix) ? $"<b><color=yellow>[{p_Channel.Prefix}]</color></b> " : string.Empty;
-            var l_MessageStr    = $"{l_Prefix}<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <color={p_User.Color}><b>@{p_User.PaintedName}</b></color> redeemed <color={p_User.Color}><b>{p_Event.Title}</b></color> {l_ImagePart} <color={p_User.Color}><b>{p_Event.Cost}</b></color>!</color>";
+            var l_MessageStr    = $"{l_Prefix}<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <color={p_User.Color}><b>@{p_User.PaintedName}</b></color> redeemed <color={p_User.Color}><b>{p_Event.Title}</b></color> {l_ImagePart} <color={p_User.Color}><b>{p_Event.Cost}</b></color>!";
 
-            if (ColorUtility.TryParseHtmlString(p_Event.BackgroundColor + "FF", out var l_HighlightColor))
+            if (ColorU.TryToUnityColor(p_Event.BackgroundColor, out var l_HighlightColor))
                 l_HighlightColor.a = 0.24f;
             else
-                l_HighlightColor = Color.green.WithAlpha(0.24f);
+                l_HighlightColor = ColorU.WithAlpha(Color.green, 0.24f);
 
             CP_SDK.Unity.MTMainThreadInvoker.Enqueue(() =>
             {
@@ -565,7 +541,7 @@ namespace ChatPlexMod_Chat.UI
                 return;
 
             var l_Prefix        = !string.IsNullOrEmpty(p_Channel.Prefix) ? $"<b><color=yellow>[{p_Channel.Prefix}]</color></b> " : string.Empty;
-            var l_MessageStr    = $"{l_Prefix}<color=#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <color={p_User.Color}><b>@{p_User.PaintedName}</b></color> ";
+            var l_MessageStr    = $"{l_Prefix}<#FFFFFFBB>[<b>{p_Service.DisplayName}</b>] <color={p_User.Color}><b>@{p_User.PaintedName}</b>";
             if (p_Event.IsGift)
                 l_MessageStr += $"gifted <color={p_User.Color}><b>{p_Event.PurchasedMonthCount}</b></color> month of <color={p_User.Color}><b>{p_Event.SubPlan}</b></color> to <color={p_User.Color}><b>@{p_Event.RecipientDisplayName}</b></color>!";
             else
@@ -577,7 +553,7 @@ namespace ChatPlexMod_Chat.UI
                 l_NewMessage.Text.ReplaceContent(l_MessageStr);
                 l_NewMessage.Service            = p_Service;
                 l_NewMessage.HighlightEnabled   = true;
-                l_NewMessage.HighlightColor     = Color.green.WithAlpha(0.36f);
+                l_NewMessage.HighlightColor     = ColorU.WithAlpha(Color.green, 0.36f);
 
                 AddMessage(l_NewMessage);
                 m_LastMessage = l_NewMessage;

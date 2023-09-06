@@ -14,13 +14,13 @@ namespace ChatPlexMod_Chat.UI
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        private List<ChatUserListItem>  m_Items         = new List<ChatUserListItem>();
-        private ChatUserListItem        m_SelectedItem  = null;
+        private List<Data.ChatUserListItem>  m_Items         = new List<Data.ChatUserListItem>();
+        private Data.ChatUserListItem        m_SelectedItem  = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        public ChatUserListItem SelectedItem => m_SelectedItem;
+        public Data.ChatUserListItem SelectedItem => m_SelectedItem;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ namespace ChatPlexMod_Chat.UI
                     XUIPrimaryButton.Make("UnMod").OnClick(OnUnModButton)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
         /// <summary>
@@ -73,7 +73,7 @@ namespace ChatPlexMod_Chat.UI
         {
             m_Items.Clear();
             for (var l_I = 0; l_I < Chat.Instance.LastChatUsers.Count; ++l_I)
-                m_Items.Add(new ChatUserListItem(Chat.Instance.LastChatUsers[l_I].Item1, Chat.Instance.LastChatUsers[l_I].Item2));
+                m_Items.Add(new Data.ChatUserListItem(Chat.Instance.LastChatUsers[l_I].Item1, Chat.Instance.LastChatUsers[l_I].Item2));
             m_Items.Sort((x, y) => x.User.DisplayName.CompareTo(y.User.DisplayName));
 
             m_List.SetListItems(m_Items);
@@ -87,7 +87,7 @@ namespace ChatPlexMod_Chat.UI
         /// </summary>
         /// <param name="p_SelectedItem">Selected item</param>
         private void OnListItemSelect(CP_SDK.UI.Data.IListItem p_SelectedItem)
-            => m_SelectedItem = (ChatUserListItem)p_SelectedItem;
+            => m_SelectedItem = (Data.ChatUserListItem)p_SelectedItem;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////

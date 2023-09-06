@@ -65,7 +65,7 @@ namespace CP_SDK.XUI
         {
             m_Element = UI.UISystem.IconButtonFactory.Create(m_InitialName, p_Parent);
 
-            try { m_OnReady?.Invoke(m_Element); }
+            try { m_OnReady?.Invoke(m_Element); m_OnReady = null; }
             catch (Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.XUI][XUIIconButton.BuildUI] Error OnReady:");
@@ -118,6 +118,26 @@ namespace CP_SDK.XUI
         /// <param name="p_Active">New state</param>
         /// <returns></returns>
         public XUIIconButton SetActive(bool p_Active) => OnReady(x => x.gameObject.SetActive(p_Active));
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Set preferred width
+        /// </summary>
+        /// <param name="p_Width">Width</param>
+        /// <returns></returns>
+        public XUIIconButton SetWidth(float p_Width) => OnReady((x) => x.SetWidth(p_Width));
+        /// <summary>
+        /// Set preferred height
+        /// </summary>
+        /// <param name="p_Height">Height</param>
+        /// <returns></returns>
+        public XUIIconButton SetHeight(float p_Height) => OnReady((x) => x.SetHeight(p_Height));
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
         /// Set sprite color
         /// </summary>

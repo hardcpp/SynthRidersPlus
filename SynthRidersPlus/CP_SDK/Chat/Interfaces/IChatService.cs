@@ -19,10 +19,16 @@ namespace CP_SDK.Chat.Interfaces
         /// </summary>
         Color AccentColor { get; }
 
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
         /// Channels
         /// </summary>
         ReadOnlyCollection<(IChatService, IChatChannel)> Channels { get; }
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// On system message
@@ -32,6 +38,9 @@ namespace CP_SDK.Chat.Interfaces
         /// Callback that occurs when a successful login to the provided streaming service occurs
         /// </summary>
         event Action<IChatService> OnLogin;
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Callback that occurs when the user joins a chat channel
@@ -73,6 +82,9 @@ namespace CP_SDK.Chat.Interfaces
         /// Callback that occurs when a raid event is received
         /// </summary>
         event Action<IChatService, IChatChannel, IChatUser, int> OnChannelRaid;
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Callback that occurs when a text message is received

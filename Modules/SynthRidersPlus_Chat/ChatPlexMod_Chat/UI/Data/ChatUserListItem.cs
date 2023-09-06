@@ -1,6 +1,6 @@
 ﻿using CP_SDK.Chat.Interfaces;
 
-namespace ChatPlexMod_Chat.UI
+namespace ChatPlexMod_Chat.UI.Data
 {
     /// <summary>
     /// Chat user list item

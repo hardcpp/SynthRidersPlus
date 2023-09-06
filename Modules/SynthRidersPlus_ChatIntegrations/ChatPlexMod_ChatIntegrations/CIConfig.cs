@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace ChatPlexMod_ChatIntegrations
 {
     internal class CIConfig : CP_SDK.Config.JsonConfig<CIConfig>
     {
         [JsonProperty] internal bool Enabled = false;
-        [JsonProperty] internal string DataLocation = $"UserData/{CP_SDK.ChatPlexSDK.ProductName}/ChatIntegrations/";
+        [JsonProperty] internal string DataLocation = Path.Combine(CP_SDK.ChatPlexSDK.BasePath, $"UserData/{CP_SDK.ChatPlexSDK.ProductName}/ChatIntegrations/");
+        [JsonProperty] internal string LastBackup = "";
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////

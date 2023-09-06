@@ -1,5 +1,5 @@
-﻿using System;
-using System.Xml;
+﻿using CP_SDK.UI.Components;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,20 +18,23 @@ namespace CP_SDK.UI.DefaultComponents
         private Button                      m_Button;
         private Image                       m_BackgroundImage;
         private Image                       m_IconImage;
-        private Components.CText            m_Label;
+        private CText                       m_Label;
         private Subs.SubStackLayoutGroup    m_StackLayoutGroup;
+
         private string                      m_Tooltip;
-        private event Action                m_OnClick;
+        private event Action                m_OnClickEvent;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
         public override RectTransform       RTransform          => m_RTransform;
         public override ContentSizeFitter   CSizeFitter         => m_CSizeFitter;
+        public override LayoutGroup         LayoutGroupC        => m_StackLayoutGroup;
         public override LayoutElement       LElement            => m_LElement;
         public override Button              ButtonC             => m_Button;
         public override Image               BackgroundImageC    => m_BackgroundImage;
         public override Image               IconImageC          => m_IconImage;
+        public override CText               TextC               => m_Label;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -63,14 +66,15 @@ namespace CP_SDK.UI.DefaultComponents
             m_BackgroundImage.rectTransform.sizeDelta     = Vector2.zero;
             m_BackgroundImage.rectTransform.localPosition = Vector2.zero;
             m_BackgroundImage.material                = UISystem.Override_GetUIMaterial();
-            m_BackgroundImage.color                   = new Color32(37, 140, 255, 255);
+            m_BackgroundImage.color                   = UISystem.PrimaryColor;
             m_BackgroundImage.type                    = Image.Type.Sliced;
             m_BackgroundImage.pixelsPerUnitMultiplier = 1;
             m_BackgroundImage.sprite                  = UISystem.GetUIButtonSprite();
 
             m_Label = UISystem.TextFactory.Create("Label", transform);
-            m_Label.SetMargins(2f, 0f, 2f, 0f);
+            m_Label.SetMargins(2.0f, 0.0f, 2.0f, 0.0f);
             m_Label.SetAlign(TMPro.TextAlignmentOptions.Capline);
+            m_Label.SetStyle(FontStyles.Bold);
 
             m_IconImage = new GameObject("Icon", UISystem.Override_UnityComponent_Image).GetComponent(UISystem.Override_UnityComponent_Image) as Image;
             m_IconImage.gameObject.layer = UISystem.UILayer;
@@ -117,8 +121,8 @@ namespace CP_SDK.UI.DefaultComponents
         /// <returns></returns>
         public override Components.CPOrSButton OnClick(Action p_Functor, bool p_Add = true)
         {
-            if (p_Add)  m_OnClick += p_Functor;
-            else        m_OnClick -= p_Functor;
+            if (p_Add)  m_OnClickEvent += p_Functor;
+            else        m_OnClickEvent -= p_Functor;
 
             return this;
         }
@@ -126,46 +130,6 @@ namespace CP_SDK.UI.DefaultComponents
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        /// <summary>
-        /// Get text
-        /// </summary>
-        /// <returns></returns>
-        public override string GetText()
-            => m_Label.GetText();
-
-        ////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////
-
-        /// <summary>
-        /// Set font size
-        /// </summary>
-        /// <param name="p_Size">New size</param>
-        /// <returns></returns>
-        public override Components.CPOrSButton SetFontSize(float p_Size)
-        {
-            m_Label.SetFontSize(p_Size);
-            return this;
-        }
-        /// <summary>
-        /// Set overflow mode
-        /// </summary>
-        /// <param name="p_OverflowMode">New overflow mdoe</param>
-        /// <returns></returns>
-        public override Components.CPOrSButton SetOverflowMode(TextOverflowModes p_OverflowMode)
-        {
-            m_Label.SetOverflowMode(p_OverflowMode);
-            return this;
-        }
-        /// <summary>
-        /// Set button text
-        /// </summary>
-        /// <param name="p_Text">New text</param>
-        /// <returns></returns>
-        public override Components.CPOrSButton SetText(string p_Text)
-        {
-            m_Label.SetText(p_Text);
-            return this;
-        }
         /// <summary>
         /// Set tooltip
         /// </summary>
@@ -185,7 +149,7 @@ namespace CP_SDK.UI.DefaultComponents
         /// </summary>
         private void Button_OnClick()
         {
-            try { m_OnClick?.Invoke(); }
+            try { m_OnClickEvent?.Invoke(); }
             catch (System.Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.UI.DefaultComponents][DefaultCPrimaryButton.Button_OnClick] Error:");
@@ -212,7 +176,7 @@ namespace CP_SDK.UI.DefaultComponents
                 return;
 
             var l_Rect = RTransform.rect;
-            var l_RPos = new Vector2(l_Rect.x + l_Rect.width / 2f, l_Rect.y + l_Rect.height);
+            var l_RPos = new Vector2(l_Rect.x + l_Rect.width / 2.0f, l_Rect.y + l_Rect.height);
             var l_Pos = RTransform.TransformPoint(l_RPos);
             l_ViewController.ShowTooltip(l_Pos, m_Tooltip);
         }

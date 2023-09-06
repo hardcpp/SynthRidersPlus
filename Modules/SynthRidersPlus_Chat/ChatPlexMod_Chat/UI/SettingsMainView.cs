@@ -12,6 +12,7 @@ namespace ChatPlexMod_Chat.UI
         public  XUISlider       m_ChatHeight;
         private XUISlider       m_ChatFontSize;
         private XUIToggle       m_ChatReverse;
+        private XUIToggle       m_ChatPlatformOriginColor;
 
         private XUIColorInput   m_ChatBackgroundColor;
         private XUIColorInput   m_ChatHighlightColor;
@@ -48,7 +49,10 @@ namespace ChatPlexMod_Chat.UI
                         XUISlider.Make().SetMinValue(1.0f).SetMaxValue(10.0f).SetIncrements(0.1f).SetValue(l_Config.FontSize).Bind(ref m_ChatFontSize),
 
                         XUIText.Make("Reverse chat order"),
-                        XUIToggle.Make().SetValue(l_Config.ReverseChatOrder).Bind(ref m_ChatReverse)
+                        XUIToggle.Make().SetValue(l_Config.ReverseChatOrder).Bind(ref m_ChatReverse),
+
+                        XUIText.Make("Show platform origin color"),
+                        XUIToggle.Make().SetValue(l_Config.PlatformOriginColor).Bind(ref m_ChatPlatformOriginColor)
                     )
                     .SetSpacing(1)
                     .SetWidth(40.0f)
@@ -85,7 +89,7 @@ namespace ChatPlexMod_Chat.UI
                 )
                 .SetSpacing(10f)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
         /// <summary>
@@ -110,9 +114,10 @@ namespace ChatPlexMod_Chat.UI
             var l_Config = CConfig.Instance;
 
             /// Update config
-            l_Config.ChatSize         = new Vector2((int)m_ChatWidth.Element.GetValue(), (int)m_ChatHeight.Element.GetValue());
-            l_Config.ReverseChatOrder = m_ChatReverse.Element.GetValue();
-            l_Config.FontSize         = m_ChatFontSize.Element.GetValue();
+            l_Config.ChatSize               = new Vector2((int)m_ChatWidth.Element.GetValue(), (int)m_ChatHeight.Element.GetValue());
+            l_Config.FontSize               = m_ChatFontSize.Element.GetValue();
+            l_Config.ReverseChatOrder       = m_ChatReverse.Element.GetValue();
+            l_Config.PlatformOriginColor    = m_ChatPlatformOriginColor.Element.GetValue();
 
             l_Config.BackgroundColor  = m_ChatBackgroundColor.Element.GetValue();
             l_Config.HighlightColor   = m_ChatHighlightColor.Element.GetValue();
@@ -135,10 +140,11 @@ namespace ChatPlexMod_Chat.UI
 
             var l_Config = CConfig.Instance;
 
-            m_ChatWidth     .SetValue(l_Config.ChatSize.x);
-            m_ChatHeight    .SetValue(l_Config.ChatSize.y);
-            m_ChatReverse   .SetValue(l_Config.ReverseChatOrder);
-            m_ChatFontSize  .SetValue(l_Config.FontSize);
+            m_ChatWidth              .SetValue(l_Config.ChatSize.x);
+            m_ChatHeight             .SetValue(l_Config.ChatSize.y);
+            m_ChatReverse            .SetValue(l_Config.ReverseChatOrder);
+            m_ChatPlatformOriginColor.SetValue(l_Config.PlatformOriginColor);
+            m_ChatFontSize           .SetValue(l_Config.FontSize);
 
             m_ChatBackgroundColor   .SetValue(l_Config.BackgroundColor);
             m_ChatHighlightColor    .SetValue(l_Config.HighlightColor);

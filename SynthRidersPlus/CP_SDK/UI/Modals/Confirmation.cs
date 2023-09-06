@@ -1,7 +1,7 @@
-﻿using CP_SDK.Unity.Extensions;
-using CP_SDK.XUI;
+﻿using CP_SDK.XUI;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CP_SDK.UI.Modals
 {
@@ -31,12 +31,14 @@ namespace CP_SDK.UI.Modals
                         .SetColor(Color.yellow)
                         .Bind(ref m_Message)
                 )
-                .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
-                .OnReady(x => x.CSizeFitter.horizontalFit = UnityEngine.UI.ContentSizeFitter.FitMode.Unconstrained),
+                .OnReady(x => {
+                    x.HOrVLayoutGroup.childForceExpandWidth = true;
+                    x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+                }),
 
                 XUIHLayout.Make(
-                    XUIPrimaryButton.Make("Yes", OnYesButton).SetWidth(20f),
-                    XUISecondaryButton.Make("No", OnNoButton).SetWidth(20f)
+                    XUIPrimaryButton.Make("Yes", OnYesButton).SetWidth(20.0f),
+                    XUISecondaryButton.Make("No", OnNoButton).SetWidth(20.0f)
                 )
                 .SetPadding(0)
             )

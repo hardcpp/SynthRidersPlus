@@ -27,6 +27,12 @@ namespace ChatPlexMod_Chat
 
         private static Vector3 DefaultChatPlayingPosition = new Vector3(  0.00f, 4.20f, 5.80f);
         private static Vector3 DefaultChatPlayingRotation = new Vector3(325.00f, 0.00f, 0.00f);
+#elif BOOMBOX
+        private static Vector3 DefaultChatMenuPosition = new Vector3(3.191f,  2.852f, 2.115f);
+        private static Vector3 DefaultChatMenuRotation = new Vector3(0.000f, 40.000f, 0.000f);
+
+        private static Vector3 DefaultChatPlayingPosition = new Vector3(2.33f,  2.145f,  3.669f);
+        private static Vector3 DefaultChatPlayingRotation = new Vector3(0.00f, 49.4501f, 0.000f);
 #else
 #error Missing game implementation
 #endif
@@ -38,6 +44,8 @@ namespace ChatPlexMod_Chat
 
         [JsonProperty] internal Vector2 ChatSize            = new Vector2(120, 140);
         [JsonProperty] internal bool    ReverseChatOrder    = false;
+        [JsonProperty] internal bool    PlatformOriginColor = true;
+
         [JsonProperty] internal float   FontSize            = 3.4f;
 
         [JsonProperty] internal bool AlignWithFloor             = true;

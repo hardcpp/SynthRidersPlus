@@ -34,6 +34,19 @@
             m_SettingsMainView  = UISystem.CreateViewController<Views.SettingsMainView>();
             m_SettingsRightView = UISystem.CreateViewController<Views.SettingsRightView>();
         }
+        /// <summary>
+        /// Stop
+        /// </summary>
+        private void OnDestroy()
+        {
+            UISystem.DestroyUI(ref m_SettingsRightView);
+            UISystem.DestroyUI(ref m_SettingsMainView);
+            UISystem.DestroyUI(ref m_SettingsLeftView);
+
+            UISystem.DestroyUI(ref m_MainRightView);
+            UISystem.DestroyUI(ref m_MainMainView);
+            UISystem.DestroyUI(ref m_MainLeftView);
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////

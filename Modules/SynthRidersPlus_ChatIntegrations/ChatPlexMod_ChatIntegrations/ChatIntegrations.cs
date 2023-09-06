@@ -181,6 +181,10 @@ namespace ChatPlexMod_ChatIntegrations
             /// Clear database
             m_Events.Clear();
 
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsLeftView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsMainView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsRightView);
+
             /// Un-init voice attack
             if (m_VoiceAttackAcquired)
             {

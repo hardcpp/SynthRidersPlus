@@ -23,6 +23,27 @@ namespace ChatPlexMod_ChatIntegrations
             if (!File.Exists(s_DATABASE_FILE))
                 return false;
 
+            if (CIConfig.Instance.LastBackup != CP_SDK.ChatPlexSDK.ProductVersion)
+            {
+                try
+                {
+                    var l_DatabaseFolder    = Path.GetDirectoryName(s_DATABASE_FILE);
+                    var l_BackupFolder      = Path.Combine(l_DatabaseFolder, "Backup");
+
+                    if (!Directory.Exists(l_BackupFolder))
+                        Directory.CreateDirectory(l_BackupFolder);
+
+                    File.Copy(s_DATABASE_FILE, Path.Combine(l_BackupFolder, $"backup_pre_{CP_SDK.ChatPlexSDK.ProductVersion}.json"));
+                }
+                catch (System.Exception)
+                {
+
+                }
+
+                CIConfig.Instance.LastBackup = CP_SDK.ChatPlexSDK.ProductVersion;
+                CIConfig.Instance.Save();
+            }
+
             string l_JSONContent = File.ReadAllText(s_DATABASE_FILE, Encoding.Unicode);
             try
             {

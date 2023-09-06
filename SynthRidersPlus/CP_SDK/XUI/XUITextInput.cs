@@ -56,7 +56,7 @@ namespace CP_SDK.XUI
         {
             m_Element = UI.UISystem.TextInputFactory.Create(m_InitialName, p_Parent);
 
-            try { m_OnReady?.Invoke(m_Element); }
+            try { m_OnReady?.Invoke(m_Element); m_OnReady = null; }
             catch (Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.XUI][XUITextInput.BuildUI] Error OnReady:");

@@ -43,7 +43,7 @@ namespace CP_SDK.XUI
                         :
                             UI.UISystem.VLayoutFactory.Create(m_InitialName, p_Parent) as UI.Components.CHOrVLayout;
 
-            try { m_OnReady?.Invoke(m_Element as t_Component); }
+            try { m_OnReady?.Invoke(m_Element as t_Component); m_OnReady = null; }
             catch (Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.XUI][_XUIHOrVSpacer<{typeof(t_Component).Name}>.BuildUI] Error OnReady:");
@@ -85,6 +85,10 @@ namespace CP_SDK.XUI
         /// <param name="p_Active">New state</param>
         /// <returns></returns>
         public t_Base SetActive(bool p_Active) => OnReady(x => x.gameObject.SetActive(p_Active));
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
         /// Set spacing
         /// </summary>

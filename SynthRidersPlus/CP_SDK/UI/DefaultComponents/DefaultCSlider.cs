@@ -32,7 +32,8 @@ namespace CP_SDK.UI.DefaultComponents
         private Image                       m_Handle;
         private Components.CText            m_ValueText;
         private DrivenRectTransformTracker  m_DrivenRectTransformTracker;
-        private Color                       m_Color                     = new Color32(37, 140, 255, 255);
+        private Color                       m_OnColor                   = UISystem.PrimaryColor;
+        private Color                       m_OffColor                  = UISystem.SecondaryColor;
         private EColorMode                  m_ColorMode                 = EColorMode.None;
         private bool                        m_EnableDragging            = true;
         private bool                        m_IsInteger                 = false;
@@ -93,7 +94,7 @@ namespace CP_SDK.UI.DefaultComponents
             m_BG.rectTransform.anchoredPosition             = new Vector2(  0.00f,  0.00f);
             m_BG.rectTransform.sizeDelta                    = new Vector2(-10.00f,  0.00f);
             m_BG.material                   = UISystem.Override_GetUIMaterial();
-            m_BG.color                      = m_Color.WithAlpha(110f / 255f);
+            m_BG.color                      = ColorU.WithAlpha(m_OnColor, 110f / 255f);
             m_BG.type                       = Image.Type.Sliced;
             m_BG.pixelsPerUnitMultiplier    = 1;
             m_BG.sprite                     = UISystem.GetUISliderBGSprite();
@@ -211,7 +212,9 @@ namespace CP_SDK.UI.DefaultComponents
         /// <returns></returns>
         public override Components.CSlider SetColor(Color p_Color)
         {
-            m_Color = p_Color;
+            m_OnColor   = p_Color;
+            m_OffColor  = p_Color;
+
             m_DecButton.SetColor(p_Color);
             m_IncButton.SetColor(p_Color);
 
@@ -607,17 +610,21 @@ namespace CP_SDK.UI.DefaultComponents
         /// </summary>
         private void UpdateStyle()
         {
+            var l_IsInteractable = IsInteractable();
+            m_DecButton.SetColor(l_IsInteractable ? m_OnColor : m_OffColor);
+            m_IncButton.SetColor(l_IsInteractable ? m_OnColor : m_OffColor);
+
             if (m_LeftMouseButtonPressed || m_LastPointerEvent != null)
             {
                 m_DecButton.SetInteractable(!m_LeftMouseButtonPressed);
                 m_IncButton.SetInteractable(!m_LeftMouseButtonPressed);
-                m_BG.color = m_Color.WithAlpha(IsInteractable() ? 200f / 255f : 50f / 255f);
+                m_BG.color = ColorU.WithAlpha(l_IsInteractable ? m_OnColor : m_OffColor, l_IsInteractable ? 200f / 255f : 50f / 255f);
             }
             else
             {
-                m_DecButton.SetInteractable(IsInteractable());
-                m_IncButton.SetInteractable(IsInteractable());
-                m_BG.color = m_Color.WithAlpha(IsInteractable() ? 110f / 255f : 50f / 255f);
+                m_DecButton.SetInteractable(l_IsInteractable);
+                m_IncButton.SetInteractable(l_IsInteractable);
+                m_BG.color = ColorU.WithAlpha(l_IsInteractable ? m_OnColor : m_OffColor, l_IsInteractable ? 110f / 255f : 50f / 255f);
             }
 
         }

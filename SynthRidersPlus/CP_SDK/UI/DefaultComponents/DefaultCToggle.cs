@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CP_SDK.Unity.Extensions;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,11 +51,11 @@ namespace CP_SDK.UI.DefaultComponents
         private float           m_OriginalKnobWidth;
         private float           m_OriginalKnobHeight;
 
-        private ColorBlock m_OnColors               = new ColorBlock() { KnobColor = new Color32( 37, 140, 255, 200), BackgroundColor = new Color32( 37, 140, 255, 100) };
-        private ColorBlock m_OffColors              = new ColorBlock() { KnobColor = new Color32(255, 191,  37, 200), BackgroundColor = new Color32(255, 191,  37, 100) };
-        private ColorBlock m_OnHighlightedColors    = new ColorBlock() { KnobColor = new Color32( 37, 140, 255, 255), BackgroundColor = new Color32( 37, 140, 255, 150) };
-        private ColorBlock m_OffHighlightedColors   = new ColorBlock() { KnobColor = new Color32(255, 191,  37, 255), BackgroundColor = new Color32(255, 191,  37, 150) };
-        private ColorBlock m_DisabledColors         = new ColorBlock() { KnobColor = new Color32(  0,   0,   0,  64), BackgroundColor = new Color32(  0,   0,   0,  68) };
+        private ColorBlock      m_OnColors;
+        private ColorBlock      m_OffColors;
+        private ColorBlock      m_OnHighlightedColors;
+        private ColorBlock      m_OffHighlightedColors;
+        private ColorBlock      m_DisabledColors;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -73,6 +74,27 @@ namespace CP_SDK.UI.DefaultComponents
         {
             if (m_RTransform)
                 return;
+
+            m_OnColors = new ColorBlock() {
+                KnobColor       = ColorU.WithAlpha(UISystem.PrimaryColor, 200.0f / 255.0f),
+                BackgroundColor = ColorU.WithAlpha(UISystem.PrimaryColor, 100.0f / 255.0f)
+            };
+            m_OffColors = new ColorBlock() {
+                KnobColor       = ColorU.WithAlpha(UISystem.SecondaryColor, 200.0f / 255.0f),
+                BackgroundColor = ColorU.WithAlpha(UISystem.SecondaryColor, 100.0f / 255.0f)
+            };
+            m_OnHighlightedColors = new ColorBlock() {
+                KnobColor       = ColorU.WithAlpha(UISystem.PrimaryColor, 255.0f / 255.0f),
+                BackgroundColor = ColorU.WithAlpha(UISystem.PrimaryColor, 150.0f / 255.0f)
+            };
+            m_OffHighlightedColors = new ColorBlock() {
+                KnobColor       = ColorU.WithAlpha(UISystem.SecondaryColor, 255.0f / 255.0f),
+                BackgroundColor = ColorU.WithAlpha(UISystem.SecondaryColor, 150.0f / 255.0f)
+            };
+            m_DisabledColors = new ColorBlock() {
+                KnobColor       = new Color32(  0,   0,   0,  64),
+                BackgroundColor = new Color32(  0,   0,   0,  68)
+            };
 
             gameObject.layer = UISystem.UILayer;
 

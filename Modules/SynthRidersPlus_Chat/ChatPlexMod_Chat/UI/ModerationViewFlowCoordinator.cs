@@ -33,17 +33,12 @@ namespace ChatPlexMod_Chat.UI
         /// <summary>
         /// On destroy
         /// </summary>
-        internal void OnDestroy()
+        private void OnDestroy()
         {
-            if (m_MainView          != null) GameObject.Destroy(m_MainView.gameObject);
-            if (m_LeftView          != null) GameObject.Destroy(m_LeftView.gameObject);
-            if (m_RightView         != null) GameObject.Destroy(m_RightView.gameObject);
-            if (m_ShortcutsMainView != null) GameObject.Destroy(m_ShortcutsMainView.gameObject);
-
-            m_LeftView              = null;
-            m_MainView              = null;
-            m_RightView             = null;
-            m_ShortcutsMainView     = null;
+            CP_SDK.UI.UISystem.DestroyUI(ref m_ShortcutsMainView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_RightView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_LeftView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_MainView);
         }
 
         ////////////////////////////////////////////////////////////////////////////

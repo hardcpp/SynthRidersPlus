@@ -10,7 +10,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
     {
         private static readonly string s_InformationStr = "Original mod made by <b>Cr4</b> and <b>Uialeth</b>"
             + "\n"
-            + "\n" + "<b><u>Commands</u></b>"
+            + "\n" + "<b>Commands</b>"
             + "\n" + "- <color=yellow>[Moderator]</color> <b>!er rain #EMOTE #COUNT</b>\n<i><color=#CCCCCCFF>Trigger a emote rain</color></i>"
             + "\n" + "- <color=yellow>[Moderator]</color> <b>!er toggle</b>\n<i><color=#CCCCCCFF>Disable any emote rain until a Menu/GamePlay scene change</color></i>"
             + "\n" + "- <color=yellow>[Moderator]</color> <b>!er clear</b>\n<i><color=#CCCCCCFF>Clear all raining emotes</color></i>";
@@ -39,7 +39,7 @@ namespace ChatPlexMod_ChatEmoteRain.UI
                     XUISecondaryButton.Make("Documentation", OnDocumentationButton)
                 )
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
 

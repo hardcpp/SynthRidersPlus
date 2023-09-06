@@ -14,10 +14,8 @@ namespace ChatPlexMod_ChatEmoteRain
     /// </summary>
     public class ChatEmoteRain : CP_SDK.ModuleBase<ChatEmoteRain>
     {
-        /// <summary>
-        /// Warm-up size per scene
-        /// </summary>
-        private static int POOL_SIZE_PER_SCENE = 50;
+        private static int      POOL_SIZE_PER_SCENE = 50;
+        private static string   CUSTOM_RAIN_PATH    = Path.Combine(CP_SDK.ChatPlexSDK.BasePath, "CustomSubRain");
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -59,8 +57,8 @@ namespace ChatPlexMod_ChatEmoteRain
             CP_SDK.ChatPlexSDK.OnGenericSceneChange += ChatPlexSDK_OnGenericSceneChange;
 
             /// Create CustomMenuSongs directory if not existing
-            if (!Directory.Exists("CustomSubRain"))
-                Directory.CreateDirectory("CustomSubRain");
+            if (!Directory.Exists(CUSTOM_RAIN_PATH))
+                Directory.CreateDirectory(CUSTOM_RAIN_PATH);
 
             LoadAssets();
 
@@ -104,6 +102,10 @@ namespace ChatPlexMod_ChatEmoteRain
 
             if (m_MenuManager != null)      GameObject.DestroyImmediate(m_MenuManager.gameObject);
             if (m_PlayingManager != null)   GameObject.DestroyImmediate(m_PlayingManager.gameObject);
+
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsLeftView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsMainView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsRightView);
 
             /// Unload assets
             UnloadAssets();
@@ -227,9 +229,9 @@ namespace ChatPlexMod_ChatEmoteRain
         {
             m_SubRainTextures.Clear();
 
-            var l_Files = Directory.GetFiles("CustomSubRain", "*.png")
-                   .Union(Directory.GetFiles("CustomSubRain", "*.gif"))
-                   .Union(Directory.GetFiles("CustomSubRain", "*.apng")).ToArray();
+            var l_Files = Directory.GetFiles(CUSTOM_RAIN_PATH, "*.png")
+                   .Union(Directory.GetFiles(CUSTOM_RAIN_PATH, "*.gif"))
+                   .Union(Directory.GetFiles(CUSTOM_RAIN_PATH, "*.apng")).ToArray();
 
             foreach (string l_CurrentFile in l_Files)
             {
@@ -276,6 +278,9 @@ namespace ChatPlexMod_ChatEmoteRain
         /// <param name="p_Message">ID of the message</param>
         private void ChatCoreMutiplixer_OnTextMessageReceived(IChatService p_Service, IChatMessage p_Message)
         {
+            if (p_Message.Channel.IsTemp)
+                return;
+
             if (!string.IsNullOrEmpty(p_Message.Message) && p_Message.Message.Length > 2 && p_Message.Message[0] == '!')
             {
                 string l_LMessage = p_Message.Message.ToLower();

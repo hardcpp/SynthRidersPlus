@@ -67,6 +67,18 @@ namespace CP_SDK.UI.Components
             return this;
         }
         /// <summary>
+        /// Set font sizes
+        /// </summary>
+        /// <param name="p_MinSize">New size</param>
+        /// <param name="p_MaxSize">New size</param>
+        /// <returns></returns>
+        public CText SetFontSizes(float p_MinSize, float p_MaxSize)
+        {
+            TMProUGUI.fontSizeMin = p_MinSize * UISystem.FontScale;
+            TMProUGUI.fontSizeMax = p_MaxSize * UISystem.FontScale;
+            return this;
+        }
+        /// <summary>
         /// Set margins
         /// </summary>
         /// <param name="p_Left">Left margin</param>

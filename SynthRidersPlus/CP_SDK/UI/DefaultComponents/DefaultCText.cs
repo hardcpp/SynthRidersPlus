@@ -34,14 +34,14 @@ namespace CP_SDK.UI.DefaultComponents
             gameObject.layer = UISystem.UILayer;
 
             m_LElement = gameObject.AddComponent<LayoutElement>();
-            m_LElement.minHeight = 5f;
+            m_LElement.minHeight = 5.0f;
 
             m_TMProUGUI = gameObject.AddComponent(UISystem.Override_UnityComponent_TextMeshProUGUI) as TextMeshProUGUI;
             m_TMProUGUI.font                = UISystem.Override_GetUIFont()                 ?? m_TMProUGUI.font;
             m_TMProUGUI.fontSharedMaterial  = UISystem.Override_GetUIFontSharedMaterial()   ?? m_TMProUGUI.fontSharedMaterial;
-            m_TMProUGUI.margin              = new Vector4(0f, 0f, 0f, 0f);
+            m_TMProUGUI.margin              = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
             m_TMProUGUI.fontSize            = 3.4f * UISystem.FontScale;
-            m_TMProUGUI.color               = Color.white;
+            m_TMProUGUI.color               = UISystem.TextColor;
             m_TMProUGUI.raycastTarget       = false;
 
             m_TMProUGUI.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);

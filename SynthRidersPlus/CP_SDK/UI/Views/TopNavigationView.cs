@@ -27,23 +27,23 @@ namespace CP_SDK.UI.Views
         {
             XUIHLayout.Make(
                 XUIPrimaryButton.Make("", OnBackButtonPressed)
-                    .SetWidth(8.0f).SetHeight(8.0f)
+                    .SetWidth(12.0f).SetHeight(8.0f)
                     .SetBackgroundSprite(UISystem.GetUIRoundRectLeftBGSprite())
                     .SetIconSprite(UISystem.GetUIDownArrowSprite())
                     .OnReady(x =>
                     {
                         x.IconImageC.rectTransform.localEulerAngles = new Vector3(0.0f, 0.0f, -90.0f);
-                        x.IconImageC.rectTransform.localScale       = new Vector3(0.6f, 0.4f, 0.6f);
+                        x.IconImageC.rectTransform.localScale       = new Vector3(0.4f, 0.4f, 0.6f);
                     }),
 
                 XUIHLayout.Make(
                     XUIText.Make("super test title!")
-                        .SetStyle(TMPro.FontStyles.UpperCase)
+                        .SetStyle(TMPro.FontStyles.UpperCase | TMPro.FontStyles.Bold)
                         .SetFontSize(4.5f)
                         .Bind(ref m_Title)
                 )
-                .SetPadding(0, 0, 0, -8).SetSpacing(0)
-                .SetBackground(true, "#727272".ToUnityColor().WithAlpha(0.65f))
+                .SetPadding(0, 0, 0, -12).SetSpacing(0)
+                .SetBackground(true, UISystem.NavigationBarBGColor, true)
                 .SetBackgroundSprite(UISystem.GetUIRoundRectRightBGSprite(), UnityEngine.UI.Image.Type.Sliced)
                 .OnReady(x => x.LElement.flexibleWidth = 5000.0f)
                 .OnReady(x => x.CSizeFitter.enabled = false)

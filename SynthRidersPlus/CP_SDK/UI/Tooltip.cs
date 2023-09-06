@@ -13,6 +13,7 @@ namespace CP_SDK.UI
         private HorizontalLayoutGroup   m_HorizontalLayoutGroup;
         private ContentSizeFitter       m_ContentSizeFitter;
         private Image                   m_Image;
+        private Components.CImage       m_Border;
         private Components.CText        m_Text;
 
         ////////////////////////////////////////////////////////////////////////////
@@ -47,12 +48,23 @@ namespace CP_SDK.UI
             l_Tooltip.m_Image.pixelsPerUnitMultiplier   = 1;
             l_Tooltip.m_Image.sprite                    = UISystem.GetUIRoundBGSprite();
             l_Tooltip.m_Image.raycastTarget             = false;
-            l_Tooltip.m_Image.color                     = Color.white.WithAlpha(0.75f);
+            l_Tooltip.m_Image.color                     = UISystem.TooltipBGColor;
             l_Tooltip.m_Image.maskable                  = false;
+
+            l_Tooltip.m_Border = UISystem.ImageFactory.Create("Text", l_Tooltip.m_RTransform);
+            l_Tooltip.m_Border.SetSprite(UISystem.GetUIRoundSmoothFrameSprite());
+            l_Tooltip.m_Border.SetColor(ColorU.WithAlpha(Color.white, 0.80f));
+            l_Tooltip.m_Border.SetType(Image.Type.Sliced);
+            l_Tooltip.m_Border.LElement.ignoreLayout = true;
+            l_Tooltip.m_Border.RTransform.anchorMin         = Vector2.zero;
+            l_Tooltip.m_Border.RTransform.anchorMax         = Vector2.one;
+            l_Tooltip.m_Border.RTransform.anchoredPosition  = Vector2.zero;
+            l_Tooltip.m_Border.RTransform.sizeDelta         = Vector2.zero;
 
             l_Tooltip.m_Text = UISystem.TextFactory.Create("Text", l_Tooltip.m_RTransform);
             l_Tooltip.m_Text.SetText("Tooltip");
-            l_Tooltip.m_Text.SetColor(Color.black);
+            l_Tooltip.m_Text.SetFontSize(3.8f);
+            l_Tooltip.m_Text.SetColor(Color.white);
 
             l_Tooltip.gameObject.SetActive(false);
 

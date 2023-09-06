@@ -10,8 +10,9 @@ namespace CP_SDK.UI.Components
     /// </summary>
     public abstract class CVXList : MonoBehaviour
     {
-        public abstract RectTransform RTransform { get; }
-        public abstract LayoutElement LElement   { get; }
+        public abstract RectTransform   RTransform      { get; }
+        public abstract LayoutElement   LElement        { get; }
+        public abstract float           ScrollPosition  { get; }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -32,6 +33,16 @@ namespace CP_SDK.UI.Components
         /// </summary>
         /// <returns></returns>
         public abstract Data.IListItem GetSelectedItem();
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// Scroll to position
+        /// </summary>
+        /// <param name="p_TargetPosition">New target position</param>
+        /// <param name="p_Animated">Is animated?</param>
+        public abstract CVXList ScrollTo(float p_TargetPosition, bool p_Animated);
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////

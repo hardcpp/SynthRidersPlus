@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace CP_SDK.UI.DefaultComponents.Subs
@@ -8,13 +9,7 @@ namespace CP_SDK.UI.DefaultComponents.Subs
     /// </summary>
     public class SubStackLayoutGroup : LayoutGroup
     {
-        /// <summary>
-        /// Child force expand width
-        /// </summary>
         private bool m_ChildForceExpandWidth = true;
-        /// <summary>
-        /// Child force expand height
-        /// </summary>
         private bool m_ChildForceExpandHeight = true;
 
         ////////////////////////////////////////////////////////////////////////////
@@ -91,7 +86,7 @@ namespace CP_SDK.UI.DefaultComponents.Subs
                 var l_FlexibleSize  = LayoutUtility.GetFlexibleSize(    l_RectTransform, p_Axis);
 
                 if (p_Axis == 0 ? ChildForceExpandWidth : ChildForceExpandHeight)
-                    l_FlexibleSize = Mathf.Max(l_FlexibleSize, 1f);
+                    l_FlexibleSize = Mathf.Max(l_FlexibleSize, 1.0f);
 
                 l_AxisMin   = Mathf.Max(l_MinSize + l_Padding, l_AxisMin);
                 l_AxisPref  = Mathf.Max(l_PreferredSize + l_Padding, l_AxisPref);
@@ -119,9 +114,9 @@ namespace CP_SDK.UI.DefaultComponents.Subs
                 var l_FlexibleSize  = LayoutUtility.GetFlexibleSize(    l_RectTransform, p_Axis);
 
                 if ((p_Axis == 0) ? ChildForceExpandWidth : ChildForceExpandHeight)
-                    l_FlexibleSize = Mathf.Max(l_FlexibleSize, 1f);
+                    l_FlexibleSize = Mathf.Max(l_FlexibleSize, 1.0f);
 
-                var l_Size      = Mathf.Clamp(l_NewAxisSize, l_MinSize, (l_FlexibleSize > 0f) ? l_AxisSize : l_PreferredSize);
+                var l_Size      = Mathf.Clamp(l_NewAxisSize, l_MinSize, (l_FlexibleSize > 0.0f) ? l_AxisSize : l_PreferredSize);
                 var l_Position  = GetStartOffset(p_Axis, l_Size);
 
                 SetChildAlongAxis(l_RectTransform, p_Axis, l_Position, l_Size);

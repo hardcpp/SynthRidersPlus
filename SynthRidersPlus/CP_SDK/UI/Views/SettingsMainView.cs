@@ -27,6 +27,7 @@ namespace CP_SDK.UI.Views
         {
             var l_Modules = ChatPlexSDK.GetModules().Where(x => x.Type == EIModuleBaseType.Integrated);
             var l_Toggles = new List<IXUIElement>();
+
             foreach (var l_Module in l_Modules)
             {
                 l_Toggles.Add(
@@ -98,7 +99,7 @@ namespace CP_SDK.UI.Views
                 .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
                 .OnReady(x => x.HOrVLayoutGroup.childForceExpandHeight = true)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
         /// <summary>

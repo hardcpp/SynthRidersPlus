@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CP_SDK.Unity.Extensions;
+using System;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace CP_SDK.UI
         private static Sprite m_UIRoundBGSprite             = null;
         private static Sprite m_UIRoundRectLeftBGSprite     = null;
         private static Sprite m_UIRoundRectRightBGSprite    = null;
+        private static Sprite m_UIRoundSmoothFrameSprite    = null;
         private static Sprite m_UISliderBGSprite            = null;
         private static Sprite m_UISliderHandleSprite        = null;
 
@@ -56,7 +58,19 @@ namespace CP_SDK.UI
         ////////////////////////////////////////////////////////////////////////////
 
         public static int   UILayer     = 5;
-        public static float FontScale   = 1.0f;
+        public static float FontScale   = 0.875f;
+
+        public static Color DefaultBGColor          = ColorU.WithAlpha("#000000", 0.5f);
+        public static Color NavigationBarBGColor    = ColorU.WithAlpha("#727272", 0.65f);
+        public static Color PrimaryColor            = new Color32( 37, 140, 255, 255);
+        public static Color SecondaryColor          = new Color32(133, 133, 135, 255);
+        public static Color TitleBlockBGColor       = ColorU.WithAlpha("#727272", 0.5f);
+        public static Color ModalBGColor            = ColorU.WithAlpha("#202021", 0.975f);
+        public static Color ListBGColor             = ColorU.WithAlpha("#000000", 0.75f);
+        public static Color KeyboardTextBGColor     = ColorU.WithAlpha(Color.gray, 0.50f);
+        public static Color TooltipBGColor          = ColorU.WithAlpha("#3A3A3B", 0.9875f);
+
+        public static Color TextColor               = Color.white;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -83,13 +97,24 @@ namespace CP_SDK.UI
         internal static void Init()
         {
             var l_Bytes = Misc.Resources.FromRelPath(Assembly.GetExecutingAssembly(), "CP_SDK._Resources.ChatPlexLogoLoading.webp");
-            Unity.EnhancedImage.FromRawAnimated("CP_SDK._Resources.ChatPlexLogoLoading.webp", Animation.EAnimationType.WEBP, l_Bytes, (x) =>
-            {
-                m_LoadingAnimation = x;
-            });
+            Unity.EnhancedImage.FromRawAnimated(
+                "CP_SDK._Resources.ChatPlexLogoLoading.webp",
+                Animation.EAnimationType.WEBP,
+                l_Bytes,
+                (x) => {
+                    m_LoadingAnimation = x;
+                }
+            );
 
             ScreenSystem.Create();
             ModMenu.Create();
+        }
+        internal static void Destroy()
+        {
+            ModMenu.Destroy();
+            ScreenSystem.Destroy();
+
+            FlowCoordinators.MainFlowCoordinator.Destroy();
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -113,21 +138,23 @@ namespace CP_SDK.UI
         public static Func<Sprite> GetUIRoundBGSprite           = () => GetXSprite(ref m_UIRoundBGSprite,           "UIRoundBG",            new Vector4(15, 15, 15, 15));
         public static Func<Sprite> GetUIRoundRectLeftBGSprite   = () => GetXSprite(ref m_UIRoundRectLeftBGSprite,   "UIRoundRectLeftBG",    new Vector4(15, 15, 15, 15));
         public static Func<Sprite> GetUIRoundRectRightBGSprite  = () => GetXSprite(ref m_UIRoundRectRightBGSprite,  "UIRoundRectRightBG",   new Vector4(15, 15, 15, 15));
+        public static Func<Sprite> GetUIRoundSmoothFrameSprite  = () => GetXSprite(ref m_UIRoundSmoothFrameSprite,  "UIRoundSmoothFrame",   new Vector4(15, 15, 15, 15));
         public static Func<Sprite> GetUISliderBGSprite          = () => GetXSprite(ref m_UISliderBGSprite,          "UISliderBG",           new Vector4(15, 15, 15, 15));
         public static Func<Sprite> GetUISliderHandleSprite      = () => GetXSprite(ref m_UISliderHandleSprite,      "UISliderHandle",       Vector4.zero);
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        public static T CreateViewController<T>() where T : ViewController<T>
+        public static t_ViewController CreateViewController<t_ViewController>()
+            where t_ViewController : ViewController<t_ViewController>
         {
-            if (ViewController<T>.Instance)
-                return ViewController<T>.Instance;
+            if (ViewController<t_ViewController>.Instance)
+                return ViewController<t_ViewController>.Instance;
 
-            var l_GameObject = new GameObject(typeof(T).Name, typeof(RectTransform), typeof(CanvasGroup));
+            var l_GameObject = new GameObject(typeof(t_ViewController).Name, typeof(RectTransform), typeof(CanvasGroup));
             GameObject.DontDestroyOnLoad(l_GameObject);
 
-            var l_ViewController = l_GameObject.AddComponent<T>();
+            var l_ViewController = l_GameObject.AddComponent<t_ViewController>();
             l_ViewController.RTransform.anchorMin           = Vector2.zero;
             l_ViewController.RTransform.anchorMax           = Vector2.one;
             l_ViewController.RTransform.sizeDelta           = Vector2.zero;
@@ -135,6 +162,42 @@ namespace CP_SDK.UI
             l_ViewController.gameObject.SetActive(false);
 
             return l_ViewController;
+        }
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        public static void DestroyUI<t_ViewController>(ref t_ViewController p_ViewController)
+            where t_ViewController : ViewController<t_ViewController>
+        {
+            if (p_ViewController)
+            {
+                GameObject.Destroy(p_ViewController.gameObject);
+                p_ViewController = null;
+            }
+        }
+        public static void DestroyUI(ref Components.CFloatingPanel p_Panel)
+        {
+            if (p_Panel)
+            {
+                GameObject.DestroyImmediate(p_Panel.gameObject);
+                p_Panel = null;
+            }
+        }
+        public static void DestroyUI<t_ViewController>(ref Components.CFloatingPanel p_Panel, ref t_ViewController p_ViewController)
+            where t_ViewController : ViewController<t_ViewController>
+        {
+            if (p_Panel)
+            {
+                GameObject.DestroyImmediate(p_Panel.gameObject);
+                p_Panel = null;
+            }
+
+            if (p_ViewController)
+            {
+                GameObject.Destroy(p_ViewController.gameObject);
+                p_ViewController = null;
+            }
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -149,7 +212,7 @@ namespace CP_SDK.UI
             var l_Texture   = Unity.Texture2DU.CreateFromRaw(l_Bytes);
             l_Texture.filterMode = FilterMode.Trilinear;
 
-            p_Sprite = Unity.SpriteU.CreateFromTextureWithBorders(l_Texture, p_Type: SpriteMeshType.FullRect, p_Pivot: new Vector2(0.5f, 0.5f), p_Borders: p_Borders);
+            p_Sprite = Unity.SpriteU.CreateFromTextureWithBorders(l_Texture, 100.0f, new Vector2(0.5f, 0.5f), 0, SpriteMeshType.FullRect, p_Borders);
 
             return p_Sprite;
         }

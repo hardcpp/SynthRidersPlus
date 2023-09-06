@@ -54,7 +54,7 @@ namespace CP_SDK.XUI
 
             BuildUIChilds(m_Element.Container);
 
-            try { m_OnReady?.Invoke(m_Element); }
+            try { m_OnReady?.Invoke(m_Element); m_OnReady = null; }
             catch (Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.XUI][XUIVScrollView.BuildUI] Error OnReady:");

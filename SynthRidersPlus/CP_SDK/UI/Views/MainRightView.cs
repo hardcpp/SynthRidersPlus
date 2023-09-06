@@ -15,7 +15,7 @@ namespace CP_SDK.UI.Views
         protected override sealed void OnViewCreation()
         {
             var l_Bytes  = Misc.Resources.FromRelPath(Assembly.GetExecutingAssembly(), "CP_SDK._Resources.ChatPlexLogoTransparent.png");
-            var l_Sprite = Unity.SpriteU.CreateFromRawWithBorders(l_Bytes, p_Type: SpriteMeshType.FullRect);
+            var l_Sprite = Unity.SpriteU.CreateFromRawWithBorders(l_Bytes);
 
             Templates.FullRectLayout(
                 Templates.TitleBar("Powered By"),
@@ -26,7 +26,7 @@ namespace CP_SDK.UI.Views
                     .SetWidth(52)
                     .SetHeight(52)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
     }

@@ -18,7 +18,7 @@ namespace ChatPlexMod_Chat.UI
             Templates.FullRectLayoutMainView(
                 Templates.TitleBar("Send message")
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace ChatPlexMod_Chat.UI
                     l_CustomKeys.Add((" " + l_Var + " ", () => ChangePrefix(l_Var), null));
             }
 
-            ShowKeyboardModal("", SendPressed, null, l_CustomKeys);
+            ShowKeyboardModal("", SendPressed, ShowKeyboard, l_CustomKeys);
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -108,13 +108,13 @@ namespace ChatPlexMod_Chat.UI
         /// <param name="p_Text"></param>
         internal void SendPressed(string p_Text)
         {
+            ShowKeyboard();
+
             if (CP_SDK.Chat.Service.Multiplexer.Channels.Count == 0)
                 return;
 
             foreach (var l_Channel in CP_SDK.Chat.Service.Multiplexer.Channels)
                 l_Channel.Item1.SendTextMessage(l_Channel.Item2, p_Text);
-
-            ShowKeyboard();
         }
     }
 }

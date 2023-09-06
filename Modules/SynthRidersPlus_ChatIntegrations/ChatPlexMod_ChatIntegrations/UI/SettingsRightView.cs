@@ -13,15 +13,15 @@ namespace ChatPlexMod_ChatIntegrations.UI
         private XUIDropdown         m_Filter = null;
         private XUIVVList           m_Events = null;
 
-        private EventCreateModal    m_EventCreateModal      = null;
-        private EventImportModal    m_EventImportModal      = null;
-        private EventTemplateModal  m_EventTemplateModal    = null;
+        private Modals.EventCreateModal    m_EventCreateModal      = null;
+        private Modals.EventImportModal    m_EventImportModal      = null;
+        private Modals.EventTemplateModal  m_EventTemplateModal    = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        private List<EventListItem> m_FilteredList      = new List<EventListItem>();
-        private EventListItem       m_SelectedListItem  = null;
+        private List<Data.EventListItem> m_FilteredList      = new List<Data.EventListItem>();
+        private Data.EventListItem       m_SelectedListItem  = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -77,12 +77,12 @@ namespace ChatPlexMod_ChatIntegrations.UI
                 .OnReady(x => x.CSizeFitter.enabled = false)
                 .ForEachDirect<XUISecondaryButton>(y => y.OnReady((x) => x.CSizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained))
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
 
-            m_EventCreateModal   = CreateModal<EventCreateModal>();
-            m_EventImportModal   = CreateModal<EventImportModal>();
-            m_EventTemplateModal = CreateModal<EventTemplateModal>();
+            m_EventCreateModal   = CreateModal<Modals.EventCreateModal>();
+            m_EventImportModal   = CreateModal<Modals.EventImportModal>();
+            m_EventTemplateModal = CreateModal<Modals.EventTemplateModal>();
 
             m_Filter.SetValue("All");
         }
@@ -103,7 +103,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
             {
                 var l_Event = l_Events[l_I];
                 if ((p_Value == null || p_Value == "All") || l_Event.GetTypeName() == p_Value)
-                    m_FilteredList.Add(new EventListItem(l_Event));
+                    m_FilteredList.Add(new Data.EventListItem(l_Event));
             }
             m_FilteredList.Sort((x, y) => (x.Event.GetTypeName() + x.Event.GenericModel.Name).CompareTo((y.Event.GetTypeName() + y.Event.GenericModel.Name)));
 
@@ -115,7 +115,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
         /// <param name="p_SelectedItem">Selected item</param>
         private void OnEventSelected(CP_SDK.UI.Data.IListItem p_SelectedItem)
         {
-            m_SelectedListItem = p_SelectedItem as EventListItem;
+            m_SelectedListItem = p_SelectedItem as Data.EventListItem;
             if (m_SelectedListItem == null)
             {
                 SettingsMainView.Instance?.SelectEvent(null);
@@ -141,7 +141,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
 
                 if (m_Filter.Element.GetValue() == "All" || m_Filter.Element.GetValue() == p_CreatedEvent.GetTypeName())
                 {
-                    var l_NewItem = new EventListItem(p_CreatedEvent);
+                    var l_NewItem = new Data.EventListItem(p_CreatedEvent);
                     m_FilteredList.Add(l_NewItem);
                     m_Events.AddListItem(l_NewItem);
                     m_Events.SetSelectedListItem(l_NewItem);
@@ -253,7 +253,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
 
                 if (m_Filter.Element.GetValue() == "All" || m_Filter.Element.GetValue() == p_ImportedEvent.GetTypeName())
                 {
-                    var l_NewItem = new EventListItem(p_ImportedEvent);
+                    var l_NewItem = new Data.EventListItem(p_ImportedEvent);
                     m_FilteredList.Add(l_NewItem);
                     m_Events.AddListItem(l_NewItem);
                     m_Events.SetSelectedListItem(l_NewItem);
@@ -278,7 +278,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
                 ShowMessageModal("Clone failed, check logs!");
             else
             {
-                var l_NewItem = new EventListItem(l_NewEvent);
+                var l_NewItem = new Data.EventListItem(l_NewEvent);
                 m_FilteredList.Add(l_NewItem);
                 m_Events.AddListItem(l_NewItem);
                 m_Events.SetSelectedListItem(l_NewItem);
@@ -290,21 +290,21 @@ namespace ChatPlexMod_ChatIntegrations.UI
         private void OnTemplatesButton()
         {
             ShowModal(m_EventTemplateModal);
-            m_EventTemplateModal.Init((System.Action<Interfaces.IEventBase>)((p_CreatedEvent) =>
+            m_EventTemplateModal.Init((p_CreatedEvent) =>
             {
                 if (p_CreatedEvent == null)
                     return;
 
                 if (m_Filter.Element.GetValue() == "All" || m_Filter.Element.GetValue() == p_CreatedEvent.GetTypeName())
                 {
-                    var l_NewItem = new EventListItem(p_CreatedEvent);
+                    var l_NewItem = new Data.EventListItem(p_CreatedEvent);
                     m_FilteredList.Add(l_NewItem);
                     m_Events.AddListItem(l_NewItem);
                     m_Events.SetSelectedListItem(l_NewItem);
                 }
                 else
                     m_Filter.SetValue(p_CreatedEvent.GetTypeName());
-            }));
+            });
         }
         /// <summary>
         /// Convert an event
@@ -338,7 +338,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
                 {
                     if (m_Filter.Element.GetValue() == "All" || m_Filter.Element.GetValue() == l_NewEvent.GetTypeName())
                     {
-                        var l_NewItem = new EventListItem(l_NewEvent);
+                        var l_NewItem = new Data.EventListItem(l_NewEvent);
                         m_FilteredList.Add(l_NewItem);
                         m_Events.AddListItem(l_NewItem);
                         m_Events.SetSelectedListItem(l_NewItem);

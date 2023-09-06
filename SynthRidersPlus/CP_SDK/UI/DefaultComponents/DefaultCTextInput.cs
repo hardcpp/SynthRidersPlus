@@ -140,8 +140,8 @@ namespace CP_SDK.UI.DefaultComponents
         {
             m_Button.interactable = p_Interactable;
 
-            m_ValueText.SetColor(Color.white.WithAlpha(p_Interactable ? 1f : 0.5f));
-            m_Icon.SetColor(Color.white.WithAlpha(p_Interactable ? 1f : 0.5f));
+            m_ValueText.SetColor(ColorU.WithAlpha(Color.white, p_Interactable ? 1f : 0.5f));
+            m_Icon.SetColor(ColorU.WithAlpha(Color.white, p_Interactable ? 1f : 0.5f));
 
             return this;
         }

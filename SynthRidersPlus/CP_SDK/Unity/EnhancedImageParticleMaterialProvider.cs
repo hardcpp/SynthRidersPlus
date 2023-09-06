@@ -15,10 +15,8 @@ namespace CP_SDK.Unity
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        /// <summary>
-        /// Material
-        /// </summary>
-        private static Material m_Material = null;
+        private static Material m_Material          = null;
+        private static Material m_CustomMaterial    = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -29,6 +27,9 @@ namespace CP_SDK.Unity
         /// <returns></returns>
         public static Material GetMaterial()
         {
+            if (m_CustomMaterial)
+                return m_CustomMaterial;
+
             if (!m_Material)
             {
                 switch (ChatPlexSDK.RenderPipeline)
@@ -46,6 +47,19 @@ namespace CP_SDK.Unity
 
             return m_Material;
         }
+        /// <summary>
+        /// Destroy instance
+        /// </summary>
+        internal static void Destroy()
+        {
+            m_CustomMaterial = null;
+
+            if (!m_Material)
+                return;
+
+            GameObject.Destroy(m_Material);
+            m_Material = null;
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -56,7 +70,7 @@ namespace CP_SDK.Unity
         /// <param name="p_Material">Custom material</param>
         public static void SetCustomMaterial(Material p_Material)
         {
-            m_Material = p_Material;
+            m_CustomMaterial = p_Material;
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -209,7 +223,7 @@ namespace CP_SDK.Unity
             l_Material.SetFloat("_Surface",                         1.00f);
             l_Material.SetFloat("_ZWrite",                          0.00f);
             l_Material.SetColor("_EmissionColor",                   new Color(0, 0, 0, 0));
-            l_Material.SetColor("_BaseColor",                       new Color(1, 1, 1, 0.8f));
+            l_Material.SetColor("_BaseColor",                       new Color(0.8f, 0.8f, 0.8f, 1.0f));
             l_Material.renderQueue      = 3000;
             l_Material.enableInstancing = true;
 

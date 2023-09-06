@@ -5,9 +5,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 #if BEATSABER
 using IPA.Utilities;
@@ -43,7 +43,7 @@ namespace ChatPlexMod_Chat
         private UI.HypeTrainFloatingPanelView       m_ChatHypeTrainFloatingPanelView    = null;
         private CP_SDK.UI.Components.CFloatingPanel m_PollFloatingPanel                 = null;
         private UI.PollFloatingPanelView            m_PollFloatingPanelView             = null;
-        private CP_SDK.UI.Components.CFloatingPanel m_PredictionFloatingPanel           = null;
+        private CP_SDK.UI.Components.CFloatingPanel m_ChatPredictionFloatingPanel       = null;
         private UI.PredictionFloatingPanelView      m_ChatPredictionFloatingPanelView   = null;
         private CP_SDK.UI.Components.CFloatingPanel m_StatusFloatingPanel               = null;
         private UI.StatusFloatingPanelView          m_StatusFloatingPanelView           = null;
@@ -146,6 +146,9 @@ namespace ChatPlexMod_Chat
 
                 /// Stop dequeue task
                 m_ActionDequeueRun = false;
+
+                m_ActionQueue = new ConcurrentQueue<Action>();
+                m_LastChatUsers.Clear();
             }
 
             /// Unbind events
@@ -168,6 +171,12 @@ namespace ChatPlexMod_Chat
 
             /// Destroy
             DestroyFloatingPanels();
+
+            UI.ModerationViewFlowCoordinator.Destroy();
+
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsLeftView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsMainView);
+            CP_SDK.UI.UISystem.DestroyUI(ref m_SettingsRightView);
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -293,14 +302,14 @@ namespace ChatPlexMod_Chat
             var l_Images = m_ModerationButton.GetComponentsInChildren<HMUI.ImageView>();
             foreach (var l_Image in l_Images)
             {
-                l_Image.SetField("_skew", 0f);
+                l_Image._skew = 0f;
                 l_Image.SetAllDirty();
             }
 
             UpdateButton();
 
             m_CreateButtonCoroutine = null;
-#elif UNITY_TESTING || SYNTHRIDERS || AUDIOTRIP
+#elif UNITY_TESTING || SYNTHRIDERS || AUDIOTRIP || BOOMBOX
             yield return null;
 #else
 #error Missing game implementation
@@ -317,7 +326,7 @@ namespace ChatPlexMod_Chat
 #if BEATSABER
             m_ModerationButton.transform.localPosition  = new Vector3(72.50f, 27.00f, 2.60f);
             m_ModerationButton.transform.localScale     = new Vector3( 0.65f,  0.50f, 0.65f);
-#elif UNITY_TESTING || SYNTHRIDERS || AUDIOTRIP
+#elif UNITY_TESTING || SYNTHRIDERS || AUDIOTRIP || BOOMBOX
 #else
 #error Missing game implementation
 #endif
@@ -397,12 +406,12 @@ namespace ChatPlexMod_Chat
 
                 ///////////////////////////////////////////////
                 /// Prediction window
-                m_PredictionFloatingPanel       = CP_SDK.UI.UISystem.FloatingPanelFactory.Create("PredictionFloatingPanel", m_DockedFloatingPanelTransform.transform);
+                m_ChatPredictionFloatingPanel       = CP_SDK.UI.UISystem.FloatingPanelFactory.Create("PredictionFloatingPanel", m_DockedFloatingPanelTransform.transform);
                 m_ChatPredictionFloatingPanelView   = CP_SDK.UI.UISystem.CreateViewController<UI.PredictionFloatingPanelView>();
-                m_PredictionFloatingPanel.SetSize(UI.PredictionFloatingPanelView.SIZE);
-                m_PredictionFloatingPanel.SetRadius(0);
-                m_PredictionFloatingPanel.SetBackground(true);
-                m_PredictionFloatingPanel.SetViewController(m_ChatPredictionFloatingPanelView);
+                m_ChatPredictionFloatingPanel.SetSize(UI.PredictionFloatingPanelView.SIZE);
+                m_ChatPredictionFloatingPanel.SetRadius(0);
+                m_ChatPredictionFloatingPanel.SetBackground(true);
+                m_ChatPredictionFloatingPanel.SetViewController(m_ChatPredictionFloatingPanelView);
                 ///////////////////////////////////////////////
 
                 ///////////////////////////////////////////////
@@ -433,25 +442,13 @@ namespace ChatPlexMod_Chat
 
             try
             {
-                /// Destroy objects
-                GameObject.Destroy(m_ChatFloatingPanel.gameObject);
-                GameObject.Destroy(m_ChatHypeTrainFloatingPanel.gameObject);
-                GameObject.Destroy(m_PollFloatingPanel.gameObject);
-                GameObject.Destroy(m_PredictionFloatingPanel.gameObject);
-                GameObject.Destroy(m_StatusFloatingPanel.gameObject);
-                GameObject.Destroy(m_RootTransform.gameObject);
+                CP_SDK.UI.UISystem.DestroyUI(ref m_ChatFloatingPanel,            ref m_ChatFloatingPanelView);
+                CP_SDK.UI.UISystem.DestroyUI(ref m_ChatHypeTrainFloatingPanel,   ref m_ChatHypeTrainFloatingPanelView);
+                CP_SDK.UI.UISystem.DestroyUI(ref m_PollFloatingPanel,            ref m_PollFloatingPanelView);
+                CP_SDK.UI.UISystem.DestroyUI(ref m_ChatPredictionFloatingPanel,  ref m_ChatPredictionFloatingPanelView);
+                CP_SDK.UI.UISystem.DestroyUI(ref m_StatusFloatingPanel,          ref m_StatusFloatingPanelView);
 
-                /// Reset variables
-                m_ChatFloatingPanelView             = null;
-                m_ChatFloatingPanel                 = null;
-                m_ChatHypeTrainFloatingPanelView    = null;
-                m_ChatHypeTrainFloatingPanel        = null;
-                m_PollFloatingPanelView             = null;
-                m_PollFloatingPanel                 = null;
-                m_PredictionFloatingPanel           = null;
-                m_ChatPredictionFloatingPanelView   = null;
-                m_StatusFloatingPanelView           = null;
-                m_StatusFloatingPanel               = null;
+                GameObject.Destroy(m_RootTransform.gameObject);
 
                 m_DockedFloatingPanelTransform      = null;
                 m_RootTransform                     = null;
@@ -502,7 +499,7 @@ namespace ChatPlexMod_Chat
                 var l_RotationRef   = l_Is360Level ? Resources.FindObjectsOfTypeAll<FlyingGameHUDRotation>().FirstOrDefault()?.gameObject : null as GameObject;
 #elif SYNTHRIDERS
                 var l_RotationRef   = Resources.FindObjectsOfTypeAll<GameObject>().FirstOrDefault(x => x.name == "[Score & Misc]");
-#elif UNITY_TESTING || AUDIOTRIP
+#elif UNITY_TESTING || AUDIOTRIP || BOOMBOX
                 var l_RotationRef = null as GameObject;
 #else
 #error Missing game implementation
@@ -541,8 +538,8 @@ namespace ChatPlexMod_Chat
                     ((-CConfig.Instance.ChatSize.y + UI.PredictionFloatingPanelView.SIZE.y + 16) / 2f) * 0.02f,
                     0
                 );
-                m_PredictionFloatingPanel.SetBackgroundColor(CConfig.Instance.BackgroundColor);
-                m_PredictionFloatingPanel.SetTransformDirect(l_PredictionPosition, Vector3.zero);
+                m_ChatPredictionFloatingPanel.SetBackgroundColor(CConfig.Instance.BackgroundColor);
+                m_ChatPredictionFloatingPanel.SetTransformDirect(l_PredictionPosition, Vector3.zero);
                 ///////////////////////////////////////////////
 
                 ///////////////////////////////////////////////

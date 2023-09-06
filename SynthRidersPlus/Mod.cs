@@ -1,5 +1,4 @@
-﻿using CP_SDK.Unity.Extensions;
-using MelonLoader;
+﻿using MelonLoader;
 using System;
 using System.Linq;
 using TMPro;
@@ -12,30 +11,19 @@ namespace SynthRidersPlus
     /// </summary>
     public class Mod : MelonMod
     {
-        /// <summary>
-        /// Harmony ID for patches
-        /// </summary>
         internal static string HarmonyID => "com.github.hardcpp.synthridersplus";
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        /// <summary>
-        /// Harmony patch holder
-        /// </summary>
-        private HarmonyLib.Harmony m_Harmony;
-        /// <summary>
-        /// Is initialized
-        /// </summary>
-        private bool m_Initialized = false;
-        /// <summary>
-        /// Base game font
-        /// </summary>
-        private static TMP_FontAsset m_BaseGameFont = null;
-        /// <summary>
-        /// UI Z-Wrap container
-        /// </summary>
-        private static GameObject m_ZWrap = null;
+        private HarmonyLib.Harmony  m_Harmony;
+        private bool                m_Initialized = false;
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        private static TMP_FontAsset    m_BaseGameFont = null;
+        private static GameObject       m_ZWrap = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -52,23 +40,18 @@ namespace SynthRidersPlus
 
             CP_SDK.Chat.Service.Discrete_OnTextMessageReceived += Service_Discrete_OnTextMessageReceived;
 
-            CP_SDK.Unity.FontManager.Setup(p_FontClone: (p_Input) =>
+            CP_SDK.Unity.FontManager.Setup(p_TMPFontAssetSetup: (p_Input) =>
             {
                 var l_MainFont = Resources.FindObjectsOfTypeAll<TMP_FontAsset>().FirstOrDefault();
-                var l_NewFont  = TMP_FontAsset.CreateFontAsset(p_Input.sourceFontFile);
-
-                l_NewFont.name                      = p_Input.name + " Clone";
-                l_NewFont.hashCode                  = TMP_TextUtilities.GetSimpleHashCode(p_Input.name + " Clone" + CP_SDK.Misc.Time.UnixTimeNowMS());
-                l_NewFont.fallbackFontAssetTable    = p_Input.fallbackFontAssetTable;
-
-                if (l_MainFont)
+                if (l_MainFont && p_Input)
                 {
-                    l_NewFont.material.shader = l_MainFont.material.shader;
-                    l_NewFont.material.color  = l_NewFont.material.color.WithAlpha(0.5f);
-                    l_NewFont.material.EnableKeyword("UNITY_UI_CLIP_RECT");
+                    p_Input.material.shader = l_MainFont.material.shader;
+                    p_Input.material.SetColor("_FaceColor", p_Input.material.GetColor("_FaceColor"));
+                    p_Input.material.EnableKeyword("CURVED");
+                    p_Input.material.EnableKeyword("UNITY_UI_CLIP_RECT");
                 }
 
-                return l_NewFont;
+                return p_Input;
             });
 
             PatchUI();
@@ -151,7 +134,6 @@ namespace SynthRidersPlus
             CP_SDK.UI.UISystem.FloatingPanelFactory = new SDK.UI.DefaultFactoriesOverrides.SR_FloatingPanelFactory();
 
             //CP_SDK.UI.UISystem.UILayer      = 29;
-            CP_SDK.UI.UISystem.FontScale    = 0.9f;
 
             CP_SDK.UI.UISystem.Override_GetUIFont = () =>
             {

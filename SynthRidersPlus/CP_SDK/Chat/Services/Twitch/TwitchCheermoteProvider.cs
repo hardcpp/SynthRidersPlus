@@ -31,15 +31,9 @@ namespace CP_SDK.Chat.Services.Twitch
         /// <returns></returns>
         public async Task TryRequestResources(string p_ChannelID, string p_ChannelName, string p_AccessToken)
         {
-            var l_WebClient = new Network.WebClient("https://api.twitch.tv/helix/", TimeSpan.FromSeconds(10), true);
-            if (!l_WebClient.Headers.ContainsKey("Client-Id"))
-                l_WebClient.Headers.Remove("Authorization");
-
-            if (l_WebClient.Headers.ContainsKey("Client-Id"))
-                l_WebClient.Headers.Remove("Authorization");
-
-            l_WebClient.Headers.Add("client-id",     TwitchService.TWITCH_CLIENT_ID);
-            l_WebClient.Headers.Add("Authorization", "Bearer " + p_AccessToken.Replace("oauth:", ""));
+            var l_WebClient = new Network.WebClientUnity("https://api.twitch.tv/helix/", TimeSpan.FromSeconds(10), true);
+            l_WebClient.SetHeader("client-id",     TwitchService.TWITCH_CLIENT_ID);
+            l_WebClient.SetHeader("Authorization", "Bearer " + p_AccessToken.Replace("oauth:", ""));
 
             bool l_IsGlobal = string.IsNullOrEmpty(p_ChannelID);
             try
@@ -76,7 +70,7 @@ namespace CP_SDK.Chat.Services.Twitch
 
                     foreach (JSONNode l_Tier in l_Node["tiers"].Values)
                     {
-                        var l_NewTier = new CheermoteTier();
+                        var l_NewTier = new TwitchCheermoteTier();
                         l_NewTier.MinBits   = l_Tier["min_bits"].AsInt;
                         l_NewTier.Color     = l_Tier["color"].Value;
                         l_NewTier.Uri       = l_Tier["images"]["dark"]["animated"]["3"].Value;

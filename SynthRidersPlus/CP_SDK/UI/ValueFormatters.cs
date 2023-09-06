@@ -9,7 +9,7 @@ namespace CP_SDK.UI
 
         public static string Minutes(float p_Value)
             => ((int)p_Value) + " Minute" + (((int)p_Value) > 1 ? "s" : "");
-          
+
         public static string TimeShortBaseSeconds(float p_Value)
         {
             const int SECONDS_PER_MINUTE = 60;
@@ -44,6 +44,11 @@ namespace CP_SDK.UI
         {
             int l_Year = 2018 + (((int)p_Value) / 12);
             return Misc.Time.MonthNames[((int)p_Value) % 12] + " " + l_Year;
+        }
+        public static string DateMonthFrom2018Short(float p_Value)
+        {
+            int l_Year = 2018 + (((int)p_Value) / 12);
+            return Misc.Time.MonthNamesShort[((int)p_Value) % 12] + " " + l_Year;
         }
     }
 }

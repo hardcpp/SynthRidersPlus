@@ -1,6 +1,5 @@
 ﻿using CP_SDK.Unity.Extensions;
 using CP_SDK.XUI;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.UI;
@@ -23,27 +22,28 @@ namespace ChatPlexMod_ChatIntegrations.UI
         private XUIVLayout              m_TriggerTab_Content            = null;
 
         private XUIVVList               m_ConditionsTab_List            = null;
-        private List<ConditionListItem> m_ConditionsTab_Items           = new List<ConditionListItem>();
         private XUIVLayout              m_ConditionsTab_Content         = null;
 
         private XUIVVList               m_OnSuccessActionsTab_List      = null;
-        private List<ActionListItem>    m_OnSuccessActionsTab_Items     = new List<ActionListItem>();
         private XUIVLayout              m_OnSuccessActionsTab_Content   = null;
 
         private XUIVVList               m_OnFailActionsTab_List         = null;
-        private List<ActionListItem>    m_OnFailActionsTab_Items        = new List<ActionListItem>();
         private XUIVLayout              m_OnFailActionsTab_Content      = null;
 
-        private AddXModal               m_AddXModal                     = null;
+        private Modals.AddXModal        m_AddXModal                     = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
         private Interfaces.IEventBase m_CurrentEvent = null;
 
-        private ConditionListItem   m_SelectedConditionListItem         = null;
-        private ActionListItem      m_SelectedOnSuccessActionListItem   = null;
-        private ActionListItem      m_SelectedOnFailActionListItem      = null;
+        private List<Data.ConditionListItem>    m_ConditionsTab_Items               = new List<Data.ConditionListItem>();
+        private List<Data.ActionListItem>       m_OnSuccessActionsTab_Items         = new List<Data.ActionListItem>();
+        private List<Data.ActionListItem>       m_OnFailActionsTab_Items            = new List<Data.ActionListItem>();
+
+        private Data.ConditionListItem          m_SelectedConditionListItem         = null;
+        private Data.ActionListItem             m_SelectedOnSuccessActionListItem   = null;
+        private Data.ActionListItem             m_SelectedOnFailActionListItem      = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
                 XUIText.Make("Please select an event to edit on right screen")
                     .SetFontSize(4.5f)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .Bind(ref m_EmptyFrame)
             .BuildUI(transform);
 
@@ -76,13 +76,13 @@ namespace ChatPlexMod_ChatIntegrations.UI
                 )
                 .Bind(ref m_TabControl)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .Bind(ref m_MainFrame)
             .BuildUI(transform);
 
             m_MainFrame.SetActive(false);
 
-            m_AddXModal = CreateModal<AddXModal>();
+            m_AddXModal = CreateModal<Modals.AddXModal>();
 
             /// Select a null event to hide everything
             SelectEvent(null);
@@ -329,7 +329,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
             if (!UICreated)
                 return;
 
-            m_ConditionsTab_Items = m_CurrentEvent.Conditions.Select(x => new ConditionListItem(x)).ToList();
+            m_ConditionsTab_Items = m_CurrentEvent.Conditions.Select(x => new Data.ConditionListItem(x)).ToList();
             m_ConditionsTab_List.SetListItems(m_ConditionsTab_Items);
             m_ConditionsTab_List.SetSelectedListItem(m_ConditionsTab_Items.FirstOrDefault(x => x.Condition == p_ConditionToFocus) ?? m_ConditionsTab_Items.FirstOrDefault());
         }
@@ -342,7 +342,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
             /// Clean up condition specific UI
             m_ConditionsTab_Content.Element.gameObject.DestroyChilds();
 
-            m_SelectedConditionListItem = p_SelectedItem as ConditionListItem;
+            m_SelectedConditionListItem = p_SelectedItem as Data.ConditionListItem;
             if (m_SelectedConditionListItem == null)
                 return;
 
@@ -384,7 +384,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
 
                 m_CurrentEvent.AddCondition(l_Condition);
 
-                var l_ListItem = new ConditionListItem(l_Condition);
+                var l_ListItem = new Data.ConditionListItem(l_Condition);
                 m_ConditionsTab_List.AddListItem(l_ListItem);
                 m_ConditionsTab_List.SetSelectedListItem(l_ListItem);
             });
@@ -459,7 +459,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
             if (!UICreated)
                 return;
 
-            var l_Items = m_CurrentEvent.OnSuccessActions.Select(x => new ActionListItem(x)).ToList();
+            var l_Items = m_CurrentEvent.OnSuccessActions.Select(x => new Data.ActionListItem(x)).ToList();
             m_OnSuccessActionsTab_List.SetListItems(l_Items);
             m_OnSuccessActionsTab_List.SetSelectedListItem(l_Items.FirstOrDefault(x => x.Action == p_ActionToFocus) ?? l_Items.FirstOrDefault());
         }
@@ -472,7 +472,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
             /// Clean up condition specific UI
             m_OnSuccessActionsTab_Content.Element.gameObject.DestroyChilds();
 
-            m_SelectedOnSuccessActionListItem = p_SelectedItem as ActionListItem;
+            m_SelectedOnSuccessActionListItem = p_SelectedItem as Data.ActionListItem;
             if (m_SelectedOnSuccessActionListItem == null)
                 return;
 
@@ -514,7 +514,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
 
                 m_CurrentEvent.AddOnSuccessAction(l_Action);
 
-                var l_ListItem = new ActionListItem(l_Action);
+                var l_ListItem = new Data.ActionListItem(l_Action);
                 m_OnSuccessActionsTab_List.AddListItem(l_ListItem);
                 m_OnSuccessActionsTab_List.SetSelectedListItem(l_ListItem);
             });
@@ -589,7 +589,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
             if (!UICreated)
                 return;
 
-            var l_Items = m_CurrentEvent.OnFailActions.Select(x => new ActionListItem(x)).ToList();
+            var l_Items = m_CurrentEvent.OnFailActions.Select(x => new Data.ActionListItem(x)).ToList();
             m_OnFailActionsTab_List.SetListItems(l_Items);
             m_OnFailActionsTab_List.SetSelectedListItem(l_Items.FirstOrDefault(x => x.Action == p_OnFailActionToFocus) ?? l_Items.FirstOrDefault());
         }
@@ -602,7 +602,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
             /// Clean up condition specific UI
             m_OnFailActionsTab_Content.Element.gameObject.DestroyChilds();
 
-            m_SelectedOnFailActionListItem = p_SelectedItem as ActionListItem;
+            m_SelectedOnFailActionListItem = p_SelectedItem as Data.ActionListItem;
             if (m_SelectedOnFailActionListItem == null)
                 return;
 
@@ -644,7 +644,7 @@ namespace ChatPlexMod_ChatIntegrations.UI
 
                 m_CurrentEvent.AddOnFailAction(l_Action);
 
-                var l_ListItem = new ActionListItem(l_Action);
+                var l_ListItem = new Data.ActionListItem(l_Action);
                 m_OnFailActionsTab_List.AddListItem(l_ListItem);
                 m_OnFailActionsTab_List.SetSelectedListItem(l_ListItem);
             });

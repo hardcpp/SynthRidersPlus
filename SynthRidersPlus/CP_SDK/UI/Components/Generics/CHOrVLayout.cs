@@ -54,7 +54,7 @@ namespace CP_SDK.UI.Components
                 m_Background.pixelsPerUnitMultiplier = 1;
                 m_Background.type                    = Image.Type.Sliced;
                 m_Background.sprite                  = UISystem.GetUIRoundBGSprite();
-                m_Background.color                   = p_Color.HasValue ? p_Color.Value : Color.black.WithAlpha(0.5f);
+                m_Background.color                   = p_Color.HasValue ? p_Color.Value : UISystem.DefaultBGColor;
             }
             else if (m_Background)
             {

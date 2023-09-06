@@ -9,12 +9,40 @@ namespace CP_SDK.Misc
     public static class Time
     {
         private static readonly DateTime s_UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-        private static string[] s_Months = new string[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        private static string[] s_Months = new string[] {
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December"
+        };
+        private static string[] s_MonthsShort = new string[] {
+            "Jan.",
+            "Feb.",
+            "Mar.",
+            "Apr.",
+            "May",
+            "Jun.",
+            "Jul.",
+            "Aug.",
+            "Sept.",
+            "Oct.",
+            "Nov.",
+            "Dec."
+        };
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
 
-        public static string[] MonthNames => s_Months;
+        public static string[] MonthNames       => s_Months;
+        public static string[] MonthNamesShort  => s_MonthsShort;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////

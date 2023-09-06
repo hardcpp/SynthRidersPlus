@@ -14,7 +14,7 @@ namespace CP_SDK.XUI
         where t_Component   : UI.Components.CPOrSButton
         where t_Base        : IXUIElement
     {
-        private UI.Components.CPOrSButton m_Button = null;
+        private UI.Components.CPOrSButton m_Element = null;
 
         private event Action<t_Component> m_OnReady;
 
@@ -22,7 +22,7 @@ namespace CP_SDK.XUI
         ////////////////////////////////////////////////////////////////////////////
 
         public override RectTransform   RTransform  => Element?.RTransform;
-        public          t_Component     Element     => m_Button as t_Component;
+        public          t_Component     Element     => m_Element as t_Component;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -44,13 +44,13 @@ namespace CP_SDK.XUI
         /// <param name="p_Parent">Transform to build UI into</param>
         public override void BuildUI(Transform p_Parent)
         {
-            m_Button =  typeof(t_Component) == typeof(UI.Components.CPrimaryButton)
+            m_Element =  typeof(t_Component) == typeof(UI.Components.CPrimaryButton)
                         ?
                             UI.UISystem.PrimaryButtonFactory.Create(m_InitialName, p_Parent) as UI.Components.CPOrSButton
                         :
                             UI.UISystem.SecondaryButtonFactory.Create(m_InitialName, p_Parent) as UI.Components.CPOrSButton;
 
-            try { m_OnReady?.Invoke(m_Button as t_Component); }
+            try { m_OnReady?.Invoke(m_Element as t_Component); }
             catch (Exception l_Exception)
             {
                 ChatPlexSDK.Logger.Error($"[CP_SDK.XUI][_XUIPOrSButton<{typeof(t_Component).Name}>.BuildUI] Error OnReady:");
@@ -68,7 +68,7 @@ namespace CP_SDK.XUI
         /// <returns></returns>
         public t_Base OnReady(Action<t_Component> p_Functor)
         {
-            if (m_Button)     p_Functor?.Invoke(m_Button as t_Component);
+            if (m_Element)     p_Functor?.Invoke(m_Element as t_Component);
             else m_OnReady += p_Functor;
             return this as t_Base;
         }

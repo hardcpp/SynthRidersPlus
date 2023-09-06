@@ -19,6 +19,7 @@ namespace CP_SDK.UI.Views
         private XUIToggle       m_EmotesTab_FFZEnabled;
         private XUIToggle       m_EmotesTab_7TVEnabled;
         private XUIToggle       m_EmotesTab_EmojisEnabled;
+        private XUIToggle       m_EmotesTab_ParseTemporaryChannels;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ namespace CP_SDK.UI.Views
                 )
                 .Bind(ref m_TabControl)
             )
-            .SetBackground(true)
+            .SetBackground(true, null, true)
             .BuildUI(transform);
 
             OnValueChanged();
@@ -117,8 +118,10 @@ namespace CP_SDK.UI.Views
                         XUIText.Make("Parse BBTV Emotes"),
                         XUIText.Make("Parse FFZ Emotes"),
                         XUIText.Make("Parse 7TV Emotes"),
-                        XUIText.Make("Parse Emojis Emotes")
+                        XUIText.Make("Parse Emojis Emotes"),
+                        XUIText.Make("Parse emotes from temporary channels")
                     )
+                    .OnReady(x => x.HOrVLayoutGroup.childForceExpandWidth = true)
                     .ForEachDirect<XUIText>(x => x.SetAlign(TMPro.TextAlignmentOptions.CaplineLeft)),
 
                     XUIVLayout.Make(
@@ -133,12 +136,15 @@ namespace CP_SDK.UI.Views
                             .Bind(ref m_EmotesTab_7TVEnabled),
                         XUIToggle.Make()
                             .SetValue(l_EmotesConfig.ParseEmojis)
-                            .Bind(ref m_EmotesTab_EmojisEnabled)
+                            .Bind(ref m_EmotesTab_EmojisEnabled),
+                        XUIToggle.Make()
+                            .SetValue(l_EmotesConfig.ParseTemporaryChannels)
+                            .Bind(ref m_EmotesTab_ParseTemporaryChannels)
                     )
                     .ForEachDirect<XUIToggle>(x => x.OnValueChanged(_ => OnValueChanged()))
                 ),
 
-                XUIVSpacer.Make(10f),
+                XUIVSpacer.Make(5f),
 
                 XUIPrimaryButton.Make("Apply / Recache emotes", OnEmotesTabApplyButton)
                     .SetWidth(60f)
@@ -206,10 +212,11 @@ namespace CP_SDK.UI.Views
             m_OBSTab_Password.SetInteractable(l_OBSConfig.Enabled);
 
             var l_EmotesConfig = Chat.ChatModSettings.Instance.Emotes;
-            l_EmotesConfig.ParseBTTVEmotes   = m_EmotesTab_BBTVEnabled.Element.GetValue();
-            l_EmotesConfig.ParseFFZEmotes    = m_EmotesTab_FFZEnabled.Element.GetValue();
-            l_EmotesConfig.Parse7TVEmotes    = m_EmotesTab_7TVEnabled.Element.GetValue();
-            l_EmotesConfig.ParseEmojis       = m_EmotesTab_EmojisEnabled.Element.GetValue();
+            l_EmotesConfig.ParseBTTVEmotes          = m_EmotesTab_BBTVEnabled.Element.GetValue();
+            l_EmotesConfig.ParseFFZEmotes           = m_EmotesTab_FFZEnabled.Element.GetValue();
+            l_EmotesConfig.Parse7TVEmotes           = m_EmotesTab_7TVEnabled.Element.GetValue();
+            l_EmotesConfig.ParseEmojis              = m_EmotesTab_EmojisEnabled.Element.GetValue();
+            l_EmotesConfig.ParseTemporaryChannels   = m_EmotesTab_ParseTemporaryChannels.Element.GetValue();
         }
 
         ////////////////////////////////////////////////////////////////////////////

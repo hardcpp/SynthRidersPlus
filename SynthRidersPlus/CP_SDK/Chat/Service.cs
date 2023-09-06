@@ -236,7 +236,10 @@ namespace CP_SDK.Chat
             foreach (var l_Service in m_Services)
                 l_Service.Stop();
 
-            m_Services = null;
+            m_Services      = null;
+            m_Started       = false;
+            m_LoadingEmotes = 0;
+            m_LoadedEmotes  = 0;
         }
 
         ////////////////////////////////////////////////////////////////////////////

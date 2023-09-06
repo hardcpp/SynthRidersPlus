@@ -162,7 +162,7 @@ namespace CP_SDK.UI.DefaultComponents
         public override Components.CColorInput SetValue(Color p_Value, bool p_Notify = true)
         {
             m_Value     = p_Value;
-            m_BG.color  = p_Value.WithAlpha(1.0f);
+            m_BG.color  = ColorU.WithAlpha(p_Value, 1.0f);
 
             if (p_Notify)
                 Notify();

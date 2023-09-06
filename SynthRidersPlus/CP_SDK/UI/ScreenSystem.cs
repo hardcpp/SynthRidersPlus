@@ -54,6 +54,22 @@ namespace CP_SDK.UI
             m_Instance = new GameObject("[CP_SDK.UI.ScreenSystem]", typeof(ScreenSystem)).GetComponent<ScreenSystem>();
             GameObject.DontDestroyOnLoad(m_Instance.gameObject);
         }
+        /// <summary>
+        /// Destroy
+        /// </summary>
+        internal static void Destroy()
+        {
+            if (!m_Instance)
+                return;
+
+            UISystem.DestroyUI(ref m_Instance.m_RightScreen);
+            UISystem.DestroyUI(ref m_Instance.m_MainScreen);
+            UISystem.DestroyUI(ref m_Instance.m_TopScreen, ref m_Instance.m_TopNavigationViewController);
+            UISystem.DestroyUI(ref m_Instance.m_LeftScreen);
+
+            GameObject.Destroy(m_Instance.gameObject);
+            m_Instance = null;
+        }
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////

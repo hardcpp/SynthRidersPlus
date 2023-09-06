@@ -34,6 +34,27 @@
         /// <summary>
         /// On hide
         /// </summary>
-        public abstract void OnHide();
+        public virtual void OnHide()
+        {
+
+        }
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// On select
+        /// </summary>
+        public virtual void OnSelect()
+        {
+
+        }
+        /// <summary>
+        /// On Unselect
+        /// </summary>
+        public virtual void OnUnselect()
+        {
+
+        }
     }
 }

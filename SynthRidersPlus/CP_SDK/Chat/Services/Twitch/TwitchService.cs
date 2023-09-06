@@ -8,9 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using UnityEngine;
 
 namespace CP_SDK.Chat.Services.Twitch
@@ -35,12 +33,18 @@ namespace CP_SDK.Chat.Services.Twitch
         /// <summary>
         /// Side handle of each message color
         /// </summary>
-        public Color AccentColor { get; } = "#9147FF".ToUnityColor().WithAlpha(0.75f);
+        public Color AccentColor { get; } = ColorU.WithAlpha("#9147FF", 0.75f);
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Channels
         /// </summary>
         public ReadOnlyCollection<(IChatService, IChatChannel)> Channels => m_Channels.Select(x => (this as IChatService, x.Value as IChatChannel)).ToList().AsReadOnly();
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// OAuth token
@@ -50,6 +54,13 @@ namespace CP_SDK.Chat.Services.Twitch
         /// OAuth token API
         /// </summary>
         public string OAuthTokenAPI => m_TokenChannel;
+        /// <summary>
+        /// Helix API instance
+        /// </summary>
+        public TwitchHelix HelixAPI { get; private set; } = null;
+
+        ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
         /// Required token scopes
@@ -72,11 +83,6 @@ namespace CP_SDK.Chat.Services.Twitch
             "whispers:edit",
             "whispers:read"
         }.AsReadOnly();
-
-        /// <summary>
-        /// Helix API instance
-        /// </summary>
-        public TwitchHelix HelixAPI { get; private set; } = null;
 
         ////////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////////
@@ -885,13 +891,12 @@ namespace CP_SDK.Chat.Services.Twitch
             m_OnSystemMessageCallbacks?.InvokeAll(this, "Connected to Twitch");
 
             ChatPlexSDK.Logger.Info("Twitch connection opened");
-            m_IRCWebSocket.SendMessage("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
-
             ChatPlexSDK.Logger.Info("Trying to login!");
             if (!string.IsNullOrEmpty(m_TokenChat))
                 m_IRCWebSocket.SendMessage($"PASS {m_TokenChat}");
 
             m_IRCWebSocket.SendMessage($"NICK {ChatPlexSDK.ProductName}{m_Random.Next(10000, 1000000)}");
+            m_IRCWebSocket.SendMessage("CAP REQ :twitch.tv/tags twitch.tv/commands twitch.tv/membership");
         }
         /// <summary>
         /// Twitch IRC socket close
@@ -1087,7 +1092,9 @@ namespace CP_SDK.Chat.Services.Twitch
 
                                 if (m_DataProvider.IsReady && !string.IsNullOrEmpty(m_LoggedInUser.Id) && !string.IsNullOrEmpty(m_LoggedInUser.DisplayName))
                                 {
-                                    m_LoggedInUser.PaintedName      = m_DataProvider._7TVDataProvider.TryGetUserDisplayName(m_LoggedInUser.Id, m_LoggedInUser.DisplayName);
+                                    m_DataProvider.TryGetUserDisplayName(m_LoggedInUser.Id, m_LoggedInUser.DisplayName, out var l_PaintedName);
+
+                                    m_LoggedInUser.PaintedName      = l_PaintedName;
                                     m_LoggedInUser._FancyNameReady  = true;
                                 }
                             }
@@ -1237,7 +1244,7 @@ namespace CP_SDK.Chat.Services.Twitch
                                 l_Channel.ViewerCount   = l_VideoPlaybackMessage.Viewers;
 
                                 if (l_Channel != null)
-                                    m_OnLiveStatusUpdatedCallbacks?.InvokeAll(this, l_Channel, l_VideoPlaybackMessage.Type == PubSubVideoPlayback.VideoPlaybackType.StreamUp || l_VideoPlaybackMessage.Viewers != 0, l_VideoPlaybackMessage.Viewers);
+                                    m_OnLiveStatusUpdatedCallbacks?.InvokeAll(this, l_Channel, l_Channel.Live, l_Channel.ViewerCount);
 
                                 break;
 
@@ -1256,13 +1263,17 @@ namespace CP_SDK.Chat.Services.Twitch
         /// </summary>
         /// <param name="p_UserName">Username</param>
         /// <returns></returns>
-        internal TwitchUser GetTwitchUser(string p_UserId, string p_UserName, string p_DisplayName, string p_Color = null)
+        internal TwitchUser GetTwitchUser(string p_UserID, string p_UserName, string p_DisplayName, string p_Color = null)
         {
             if (m_TwitchUsers.TryGetValue(p_UserName, out var l_User))
             {
+
+
                 if (m_DataProvider.IsReady && !l_User._FancyNameReady && !string.IsNullOrEmpty(l_User.Id) && !string.IsNullOrEmpty(l_User.DisplayName))
                 {
-                    l_User.PaintedName      = m_DataProvider._7TVDataProvider.TryGetUserDisplayName(l_User.Id, l_User.DisplayName);
+                    m_DataProvider.TryGetUserDisplayName(l_User.Id, l_User.DisplayName, out var l_PaintedName);
+
+                    l_User.PaintedName      = l_PaintedName;
                     l_User._FancyNameReady  = true;
                 }
 
@@ -1271,16 +1282,18 @@ namespace CP_SDK.Chat.Services.Twitch
 
             l_User = new TwitchUser()
             {
-                Id          = p_UserId ?? string.Empty,
+                Id          = p_UserID ?? string.Empty,
                 UserName    = p_UserName,
                 DisplayName = p_DisplayName ?? p_UserName,
                 PaintedName = p_DisplayName ?? p_UserName,
                 Color       = string.IsNullOrEmpty(p_Color) ? ChatUtils.GetNameColor(p_UserName) : p_Color,
             };
 
-            if (m_DataProvider.IsReady && !string.IsNullOrEmpty(p_UserId) && !string.IsNullOrEmpty(p_DisplayName))
+            if (m_DataProvider.IsReady && !string.IsNullOrEmpty(p_UserID) && !string.IsNullOrEmpty(p_DisplayName))
             {
-                l_User.PaintedName      = m_DataProvider._7TVDataProvider.TryGetUserDisplayName(p_UserId, p_DisplayName);
+                m_DataProvider.TryGetUserDisplayName(p_UserID, p_DisplayName, out var l_PaintedName);
+
+                l_User.PaintedName      = l_PaintedName;
                 l_User._FancyNameReady  = true;
             }
 
